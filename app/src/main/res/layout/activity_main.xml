@@ -3,24 +3,132 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0A0A0A"
-    android:gravity="center"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Bender VPN"
-        android:textColor="#FFFFFF"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="40dp" />
+    <!-- Верхняя панель -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#111111"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="12dp">
 
-    <Button
-        android:id="@+id/vpnButton"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:text="ВКЛ"
-        android:textSize="22sp"
-        android:textColor="#00D4FF"
-        android:backgroundTint="#1A1A1A" />
+        <Button
+            android:id="@+id/menuButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:backgroundTint="#00000000"
+            android:text="☰"
+            android:textColor="#FFFFFF"
+            android:textSize="22sp" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Bender VPN"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/freeBadge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00D4FF"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
+            android:text="free"
+            android:textColor="#000000"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- Баннер трафика -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#1A1A1A"
+        android:gravity="center_vertical"
+        android:padding="12dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Осталось 300MB премиум-трафика"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/addTrafficButton"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:backgroundTint="#FF6B00"
+            android:text="+ Добавить"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <!-- Центр: кнопка и статус -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/vpnButton"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:backgroundTint="#1A1A1A"
+            android:text="⏻"
+            android:textColor="#00D4FF"
+            android:textSize="48sp" />
+
+        <TextView
+            android:id="@+id/statusText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="VPN отключен"
+            android:textColor="#777777"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- Карточка сервера -->
+    <LinearLayout
+        android:id="@+id/serverCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="#1A1A1A"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/serverFlag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="🇺🇸"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/serverName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:text="United States"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="›"
+            android:textColor="#FF6B00"
+            android:textSize="24sp" />
+    </LinearLayout>
 </LinearLayout>

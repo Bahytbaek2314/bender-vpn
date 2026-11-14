@@ -11,6 +11,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MenuActivity" />
+        <activity android:name=".ServerListActivity" />
         <service android:name=".SimpleVpnService"
             android:permission="android.permission.BIND_VPN_SERVICE"
             android:exported="false">
@@ -18,5 +20,6 @@
                 <action android:name="android.net.VpnService" />
             </intent-filter>
         </service>
+        <activity android:name=".LoginActivity" />
     </application>
 </manifest>
