@@ -3,6 +3,7 @@ package com.example.bendervpn
 import android.content.Intent
 import android.net.VpnService
 import android.os.Bundle
+import android.view.Gravity
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         val serverCard = findViewById<LinearLayout>(R.id.serverCard)
 
         menuButton.setOnClickListener {
-            drawer.openDrawer(android.view.Gravity.LEFT)
+            drawer.openDrawer(Gravity.LEFT)
         }
 
         serverCard.setOnClickListener {
