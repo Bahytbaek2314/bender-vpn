@@ -8,22 +8,25 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 
 class MainActivity : AppCompatActivity() {
     private var isRunning = false
     private var isLoggedIn = false
+    private lateinit var drawer: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        drawer = findViewById(R.id.drawerLayout)
         val menuButton = findViewById<Button>(R.id.menuButton)
         val vpnButton = findViewById<Button>(R.id.vpnButton)
         val statusText = findViewById<TextView>(R.id.statusText)
         val serverCard = findViewById<LinearLayout>(R.id.serverCard)
 
         menuButton.setOnClickListener {
-            startActivity(Intent(this, MenuActivity::class.java))
+            drawer.open()
         }
 
         serverCard.setOnClickListener {
