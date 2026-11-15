@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         val serverCard = findViewById<LinearLayout>(R.id.serverCard)
 
         menuButton.setOnClickListener {
-            drawer.open()
+            drawer.openDrawer(android.view.Gravity.LEFT)
         }
 
         serverCard.setOnClickListener {
