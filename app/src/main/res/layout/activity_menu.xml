@@ -13,87 +13,55 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Мой аккаунт"
+            android:text="Меню"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
-
-            <Button
-                android:id="@+id/registerBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Регистрация"
-                android:textColor="#00D4FF"
-                android:backgroundTint="#00000000" />
-
-            <Button
-                android:id="@+id/loginBtn"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Вход"
-                android:textColor="#00D4FF"
-                android:backgroundTint="#00000000" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/premiumBtn"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Премиум-тариф"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#FF6B00"
-            android:layout_marginBottom="8dp" />
-
-        <Button
-            android:id="@+id/restoreBtn"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Восстановить подписку"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#1A1A1A"
-            android:layout_marginBottom="8dp" />
-
-        <Button
-            android:id="@+id/pcBtn"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Установить на ПК/Mac"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#1A1A1A"
-            android:layout_marginBottom="8dp" />
-
-        <Button
-            android:id="@+id/messagesBtn"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Сообщения"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#1A1A1A"
-            android:layout_marginBottom="8dp" />
-
-        <Button
-            android:id="@+id/helpBtn"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="Помощь и справка"
-            android:textColor="#FFFFFF"
-            android:backgroundTint="#1A1A1A"
             android:layout_marginBottom="16dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bender VPN ID: 123456789"
-            android:textColor="#777777"
-            android:textSize="12sp" />
+        <Button
+            android:id="@+id/loginBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Вход"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#1A1A1A"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/registerBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Регистрация"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#1A1A1A"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/serversBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Серверы"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#1A1A1A"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/settingsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Настройки"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#1A1A1A"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/logoutBtn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="Выйти"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#FF6B00"
+            android:layout_marginTop="16dp" />
     </LinearLayout>
 </ScrollView>

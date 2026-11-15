@@ -11,23 +11,21 @@ class MenuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
 
-        findViewById<Button>(R.id.premiumBtn).setOnClickListener {
-            Toast.makeText(this, "Премиум в разработке", Toast.LENGTH_SHORT).show()
-        }
-        findViewById<Button>(R.id.restoreBtn).setOnClickListener {
-            Toast.makeText(this, "Восстановление подписки", Toast.LENGTH_SHORT).show()
-        }
-        findViewById<Button>(R.id.pcBtn).setOnClickListener {
-            Toast.makeText(this, "Установка на ПК/Mac", Toast.LENGTH_SHORT).show()
-        }
-        findViewById<Button>(R.id.messagesBtn).setOnClickListener {
-            Toast.makeText(this, "Сообщения", Toast.LENGTH_SHORT).show()
-        }
-        findViewById<Button>(R.id.helpBtn).setOnClickListener {
-            Toast.makeText(this, "Помощь и справка", Toast.LENGTH_SHORT).show()
-        }
         findViewById<Button>(R.id.loginBtn).setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
+        }
+        findViewById<Button>(R.id.registerBtn).setOnClickListener {
+            Toast.makeText(this, "Регистрация", Toast.LENGTH_SHORT).show()
+        }
+        findViewById<Button>(R.id.serversBtn).setOnClickListener {
+            startActivity(Intent(this, ServerListActivity::class.java))
+        }
+        findViewById<Button>(R.id.settingsBtn).setOnClickListener {
+            Toast.makeText(this, "Настройки", Toast.LENGTH_SHORT).show()
+        }
+        findViewById<Button>(R.id.logoutBtn).setOnClickListener {
+            Toast.makeText(this, "Выход", Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
 }

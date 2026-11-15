@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
     private var isRunning = false
+    private var isLoggedIn = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,7 +21,6 @@ class MainActivity : AppCompatActivity() {
         val vpnButton = findViewById<Button>(R.id.vpnButton)
         val statusText = findViewById<TextView>(R.id.statusText)
         val serverCard = findViewById<LinearLayout>(R.id.serverCard)
-        val addTraffic = findViewById<Button>(R.id.addTrafficButton)
 
         menuButton.setOnClickListener {
             startActivity(Intent(this, MenuActivity::class.java))
@@ -30,11 +30,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, ServerListActivity::class.java))
         }
 
-        addTraffic.setOnClickListener {
-            Toast.makeText(this, "Премиум пока в разработке", Toast.LENGTH_SHORT).show()
-        }
-
         vpnButton.setOnClickListener {
+            if (!isLoggedIn) {
+                startActivity(Intent(this, LoginActivity::class.java))
+                return@setOnClickListener
+            }
             if (!isRunning) {
                 val intent = VpnService.prepare(this)
                 if (intent != null) startActivityForResult(intent, 1)
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         startService(Intent(this, SimpleVpnService::class.java))
         isRunning = true
         findViewById<TextView>(R.id.statusText).text = "Подключено"
-        findViewById<Button>(R.id.vpnButton).text = "⏻"
+        findViewById<Button>(R.id.vpnButton).text = "Отключить"
         Toast.makeText(this, "VPN запущен", Toast.LENGTH_SHORT).show()
     }
 
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
         startService(intent)
         isRunning = false
         findViewById<TextView>(R.id.statusText).text = "VPN отключен"
-        findViewById<Button>(R.id.vpnButton).text = "⏻"
+        findViewById<Button>(R.id.vpnButton).text = "Подключиться"
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
