@@ -8,13 +8,11 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 
 class MainActivity : AppCompatActivity() {
     private var isRunning = false
-    private var isLoggedIn = false
     private lateinit var drawer: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +22,6 @@ class MainActivity : AppCompatActivity() {
         drawer = findViewById(R.id.drawerLayout)
         val menuButton = findViewById<Button>(R.id.menuButton)
         val vpnButton = findViewById<Button>(R.id.vpnButton)
-        val statusText = findViewById<TextView>(R.id.statusText)
         val serverCard = findViewById<LinearLayout>(R.id.serverCard)
 
         menuButton.setOnClickListener {
@@ -33,6 +30,28 @@ class MainActivity : AppCompatActivity() {
 
         serverCard.setOnClickListener {
             startActivity(Intent(this, ServerListActivity::class.java))
+        }
+
+        // Кнопки меню
+        findViewById<TextView>(R.id.loginBtn).setOnClickListener {
+            drawer.closeDrawer(Gravity.LEFT)
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
+        findViewById<TextView>(R.id.registerBtn).setOnClickListener {
+            drawer.closeDrawer(Gravity.LEFT)
+            Toast.makeText(this, "Регистрация", Toast.LENGTH_SHORT).show()
+        }
+        findViewById<TextView>(R.id.serversBtn).setOnClickListener {
+            drawer.closeDrawer(Gravity.LEFT)
+            startActivity(Intent(this, ServerListActivity::class.java))
+        }
+        findViewById<TextView>(R.id.settingsBtn).setOnClickListener {
+            drawer.closeDrawer(Gravity.LEFT)
+            Toast.makeText(this, "Настройки", Toast.LENGTH_SHORT).show()
+        }
+        findViewById<TextView>(R.id.logoutBtn).setOnClickListener {
+            drawer.closeDrawer(Gravity.LEFT)
+            Toast.makeText(this, "Выход", Toast.LENGTH_SHORT).show()
         }
 
         vpnButton.setOnClickListener {
