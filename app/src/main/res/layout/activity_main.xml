@@ -73,12 +73,14 @@
             android:padding="16dp">
 
             <TextView
+                android:id="@+id/serverFlag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="🇺🇸"
                 android:textSize="24sp" />
 
             <TextView
+                android:id="@+id/serverName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
@@ -88,11 +90,12 @@
                 android:textSize="16sp" />
 
             <TextView
+                android:id="@+id/serverPing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="›"
-                android:textColor="#FF6B00"
-                android:textSize="24sp" />
+                android:text="46 ms"
+                android:textColor="#00D4FF"
+                android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
 

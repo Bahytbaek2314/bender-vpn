@@ -8,6 +8,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 
@@ -35,10 +36,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         vpnButton.setOnClickListener {
-            if (!isLoggedIn) {
-                startActivity(Intent(this, LoginActivity::class.java))
-                return@setOnClickListener
-            }
             if (!isRunning) {
                 val intent = VpnService.prepare(this)
                 if (intent != null) startActivityForResult(intent, 1)
