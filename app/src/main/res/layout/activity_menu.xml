@@ -21,21 +21,11 @@
             android:layout_marginBottom="24dp" />
 
         <TextView
-            android:id="@+id/loginBtn"
+            android:id="@+id/importKeyBtn"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:gravity="center_vertical"
-            android:text="Вход"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:paddingStart="8dp" />
-
-        <TextView
-            android:id="@+id/registerBtn"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:gravity="center_vertical"
-            android:text="Регистрация"
+            android:text="Импорт ключа"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:paddingStart="8dp" />

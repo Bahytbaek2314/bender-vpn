@@ -11,11 +11,8 @@ class MenuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
 
-        findViewById<TextView>(R.id.loginBtn).setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
-        }
-        findViewById<TextView>(R.id.registerBtn).setOnClickListener {
-            Toast.makeText(this, "Регистрация", Toast.LENGTH_SHORT).show()
+        findViewById<TextView>(R.id.importKeyBtn).setOnClickListener {
+            Toast.makeText(this, "Импорт ключа", Toast.LENGTH_SHORT).show()
         }
         findViewById<TextView>(R.id.serversBtn).setOnClickListener {
             startActivity(Intent(this, ServerListActivity::class.java))
