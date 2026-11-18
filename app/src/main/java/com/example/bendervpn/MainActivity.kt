@@ -3,9 +3,11 @@ package com.example.bendervpn
 import android.content.Intent
 import android.net.VpnService
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.Gravity
-import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -16,14 +18,16 @@ import androidx.drawerlayout.widget.DrawerLayout
 class MainActivity : AppCompatActivity() {
     private var isRunning = false
     private lateinit var drawer: DrawerLayout
+    private lateinit var vpnButton: ImageView
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         drawer = findViewById(R.id.drawerLayout)
-        val menuButton = findViewById<Button>(R.id.menuButton)
-        val vpnButton = findViewById<Button>(R.id.vpnButton)
+        vpnButton = findViewById(R.id.vpnButton)
+        val menuButton = findViewById<android.widget.Button>(R.id.menuButton)
         val serverCard = findViewById<LinearLayout>(R.id.serverCard)
 
         menuButton.setOnClickListener { drawer.openDrawer(Gravity.LEFT) }
@@ -51,11 +55,19 @@ class MainActivity : AppCompatActivity() {
             if (!isRunning) {
                 val intent = VpnService.prepare(this)
                 if (intent != null) startActivityForResult(intent, 1)
-                else startVpn()
+                else startConnecting()
             } else {
                 stopVpn()
             }
         }
+    }
+
+    private fun startConnecting() {
+        vpnButton.setImageResource(R.drawable.loading)
+        findViewById<TextView>(R.id.statusText).text = "Подключение..."
+        handler.postDelayed({
+            startVpn()
+        }, 2000)
     }
 
     private fun updateKeyStatus() {
@@ -92,8 +104,8 @@ class MainActivity : AppCompatActivity() {
     private fun startVpn() {
         startService(Intent(this, SimpleVpnService::class.java))
         isRunning = true
+        vpnButton.setImageResource(R.drawable.success)
         findViewById<TextView>(R.id.statusText).text = "Подключено"
-        findViewById<Button>(R.id.vpnButton).text = "Отключить"
         Toast.makeText(this, "VPN запущен", Toast.LENGTH_SHORT).show()
     }
 
@@ -102,17 +114,22 @@ class MainActivity : AppCompatActivity() {
         intent.action = "STOP"
         startService(intent)
         isRunning = false
+        vpnButton.setImageResource(R.drawable.loading)
         findViewById<TextView>(R.id.statusText).text = "VPN отключен"
-        findViewById<Button>(R.id.vpnButton).text = "Подключиться"
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 1 && resultCode == RESULT_OK) startVpn()
+        if (requestCode == 1 && resultCode == RESULT_OK) startConnecting()
     }
 
     override fun onResume() {
         super.onResume()
         updateKeyStatus()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        handler.removeCallbacksAndMessages(null)
     }
 }
