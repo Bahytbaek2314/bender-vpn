@@ -31,16 +31,6 @@
             android:paddingStart="8dp" />
 
         <TextView
-            android:id="@+id/serversBtn"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:gravity="center_vertical"
-            android:text="Серверы"
-            android:textColor="#FFFFFF"
-            android:textSize="16sp"
-            android:paddingStart="8dp" />
-
-        <TextView
             android:id="@+id/settingsBtn"
             android:layout_width="match_parent"
             android:layout_height="48dp"

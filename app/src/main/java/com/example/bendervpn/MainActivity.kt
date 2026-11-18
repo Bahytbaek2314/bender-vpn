@@ -26,9 +26,7 @@ class MainActivity : AppCompatActivity() {
         val vpnButton = findViewById<Button>(R.id.vpnButton)
         val serverCard = findViewById<LinearLayout>(R.id.serverCard)
 
-        menuButton.setOnClickListener {
-            drawer.openDrawer(Gravity.LEFT)
-        }
+        menuButton.setOnClickListener { drawer.openDrawer(Gravity.LEFT) }
 
         serverCard.setOnClickListener {
             startActivity(Intent(this, ServerListActivity::class.java))
@@ -38,18 +36,16 @@ class MainActivity : AppCompatActivity() {
             drawer.closeDrawer(Gravity.LEFT)
             showImportDialog()
         }
-        findViewById<TextView>(R.id.serversBtn).setOnClickListener {
-            drawer.closeDrawer(Gravity.LEFT)
-            startActivity(Intent(this, ServerListActivity::class.java))
-        }
         findViewById<TextView>(R.id.settingsBtn).setOnClickListener {
             drawer.closeDrawer(Gravity.LEFT)
-            Toast.makeText(this, "Настройки", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
         findViewById<TextView>(R.id.logoutBtn).setOnClickListener {
             drawer.closeDrawer(Gravity.LEFT)
             Toast.makeText(this, "Выход", Toast.LENGTH_SHORT).show()
         }
+
+        updateKeyStatus()
 
         vpnButton.setOnClickListener {
             if (!isRunning) {
@@ -59,6 +55,16 @@ class MainActivity : AppCompatActivity() {
             } else {
                 stopVpn()
             }
+        }
+    }
+
+    private fun updateKeyStatus() {
+        val key = getSharedPreferences("vpn", MODE_PRIVATE).getString("key", null)
+        val importBtn = findViewById<TextView>(R.id.importKeyBtn)
+        if (key.isNullOrEmpty()) {
+            importBtn.text = "Импорт ключа"
+        } else {
+            importBtn.text = "Ключ импортирован ✓"
         }
     }
 
@@ -75,6 +81,7 @@ class MainActivity : AppCompatActivity() {
                         .edit()
                         .putString("key", key)
                         .apply()
+                    updateKeyStatus()
                     Toast.makeText(this, "Ключ сохранён", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -102,5 +109,10 @@ class MainActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == 1 && resultCode == RESULT_OK) startVpn()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        updateKeyStatus()
     }
 }

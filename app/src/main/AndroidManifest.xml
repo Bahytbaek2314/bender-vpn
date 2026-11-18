@@ -1,25 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.bendervpn">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.BIND_VPN_SERVICE" />
+
     <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
         android:label="Bender VPN"
         android:theme="@style/Theme.AppCompat.NoActionBar">
+
         <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MenuActivity" />
+
         <activity android:name=".ServerListActivity" />
-        <service android:name=".SimpleVpnService"
+        <activity android:name=".SettingsActivity" />
+        <activity android:name=".LoginActivity" />
+
+        <service
+            android:name=".SimpleVpnService"
             android:permission="android.permission.BIND_VPN_SERVICE"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.net.VpnService" />
             </intent-filter>
         </service>
-        <activity android:name=".LoginActivity" />
     </application>
 </manifest>
