@@ -14,11 +14,8 @@ class MenuActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.importKeyBtn).setOnClickListener {
             Toast.makeText(this, "Импорт ключа", Toast.LENGTH_SHORT).show()
         }
-        findViewById<TextView>(R.id.serversBtn).setOnClickListener {
-            startActivity(Intent(this, ServerListActivity::class.java))
-        }
         findViewById<TextView>(R.id.settingsBtn).setOnClickListener {
-            Toast.makeText(this, "Настройки", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, SettingsActivity::class.java))
         }
         findViewById<TextView>(R.id.logoutBtn).setOnClickListener {
             Toast.makeText(this, "Выход", Toast.LENGTH_SHORT).show()
