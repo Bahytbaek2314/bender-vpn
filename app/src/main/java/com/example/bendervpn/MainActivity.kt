@@ -32,14 +32,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, ServerListActivity::class.java))
         }
 
-        // Кнопки меню
-        findViewById<TextView>(R.id.loginBtn).setOnClickListener {
+        findViewById<TextView>(R.id.importKeyBtn).setOnClickListener {
             drawer.closeDrawer(Gravity.LEFT)
-            startActivity(Intent(this, LoginActivity::class.java))
-        }
-        findViewById<TextView>(R.id.registerBtn).setOnClickListener {
-            drawer.closeDrawer(Gravity.LEFT)
-            Toast.makeText(this, "Регистрация", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Импорт ключа", Toast.LENGTH_SHORT).show()
         }
         findViewById<TextView>(R.id.serversBtn).setOnClickListener {
             drawer.closeDrawer(Gravity.LEFT)
