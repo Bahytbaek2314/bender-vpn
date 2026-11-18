@@ -5,9 +5,11 @@ import android.net.VpnService
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.Button
+import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 
@@ -34,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<TextView>(R.id.importKeyBtn).setOnClickListener {
             drawer.closeDrawer(Gravity.LEFT)
-            Toast.makeText(this, "Импорт ключа", Toast.LENGTH_SHORT).show()
+            showImportDialog()
         }
         findViewById<TextView>(R.id.serversBtn).setOnClickListener {
             drawer.closeDrawer(Gravity.LEFT)
@@ -58,6 +60,26 @@ class MainActivity : AppCompatActivity() {
                 stopVpn()
             }
         }
+    }
+
+    private fun showImportDialog() {
+        val input = EditText(this)
+        input.hint = "Вставьте ключ из Telegram"
+        AlertDialog.Builder(this)
+            .setTitle("Импорт ключа")
+            .setView(input)
+            .setPositiveButton("Сохранить") { _, _ ->
+                val key = input.text.toString().trim()
+                if (key.isNotEmpty()) {
+                    getSharedPreferences("vpn", MODE_PRIVATE)
+                        .edit()
+                        .putString("key", key)
+                        .apply()
+                    Toast.makeText(this, "Ключ сохранён", Toast.LENGTH_SHORT).show()
+                }
+            }
+            .setNegativeButton("Отмена", null)
+            .show()
     }
 
     private fun startVpn() {
