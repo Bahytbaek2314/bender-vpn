@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import com.bumptech.glide.Glide
 
 class MainActivity : AppCompatActivity() {
     private var isRunning = false
@@ -50,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         updateKeyStatus()
+        Glide.with(this).load(R.drawable.loading).into(vpnButton)
 
         vpnButton.setOnClickListener {
             if (!isRunning) {
@@ -63,21 +65,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun startConnecting() {
-        vpnButton.setImageResource(R.drawable.loading)
+        Glide.with(this).load(R.drawable.loading).into(vpnButton)
         findViewById<TextView>(R.id.statusText).text = "Подключение..."
-        handler.postDelayed({
-            startVpn()
-        }, 2000)
+        handler.postDelayed({ startVpn() }, 2000)
     }
 
     private fun updateKeyStatus() {
         val key = getSharedPreferences("vpn", MODE_PRIVATE).getString("key", null)
         val importBtn = findViewById<TextView>(R.id.importKeyBtn)
-        if (key.isNullOrEmpty()) {
-            importBtn.text = "Импорт ключа"
-        } else {
-            importBtn.text = "Ключ импортирован ✓"
-        }
+        importBtn.text = if (key.isNullOrEmpty()) "Импорт ключа" else "Ключ импортирован ✓"
     }
 
     private fun showImportDialog() {
@@ -89,10 +85,7 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton("Сохранить") { _, _ ->
                 val key = input.text.toString().trim()
                 if (key.isNotEmpty()) {
-                    getSharedPreferences("vpn", MODE_PRIVATE)
-                        .edit()
-                        .putString("key", key)
-                        .apply()
+                    getSharedPreferences("vpn", MODE_PRIVATE).edit().putString("key", key).apply()
                     updateKeyStatus()
                     Toast.makeText(this, "Ключ сохранён", Toast.LENGTH_SHORT).show()
                 }
@@ -104,7 +97,7 @@ class MainActivity : AppCompatActivity() {
     private fun startVpn() {
         startService(Intent(this, SimpleVpnService::class.java))
         isRunning = true
-        vpnButton.setImageResource(R.drawable.success)
+        Glide.with(this).load(R.drawable.success).into(vpnButton)
         findViewById<TextView>(R.id.statusText).text = "Подключено"
         Toast.makeText(this, "VPN запущен", Toast.LENGTH_SHORT).show()
     }
@@ -114,7 +107,7 @@ class MainActivity : AppCompatActivity() {
         intent.action = "STOP"
         startService(intent)
         isRunning = false
-        vpnButton.setImageResource(R.drawable.loading)
+        Glide.with(this).load(R.drawable.loading).into(vpnButton)
         findViewById<TextView>(R.id.statusText).text = "VPN отключен"
     }
 
