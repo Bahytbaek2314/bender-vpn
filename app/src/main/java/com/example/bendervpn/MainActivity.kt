@@ -15,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 class MainActivity : AppCompatActivity() {
     private var isRunning = false
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         updateKeyStatus()
-        Glide.with(this).load(R.drawable.loading).into(vpnButton)
+        loadGif(R.drawable.loading)
 
         vpnButton.setOnClickListener {
             if (!isRunning) {
@@ -64,8 +65,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun loadGif(resId: Int) {
+        Glide.with(this)
+            .asGif()
+            .load(resId)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .into(vpnButton)
+    }
+
     private fun startConnecting() {
-        Glide.with(this).load(R.drawable.loading).into(vpnButton)
+        loadGif(R.drawable.loading)
         findViewById<TextView>(R.id.statusText).text = "Подключение..."
         handler.postDelayed({ startVpn() }, 2000)
     }
@@ -97,7 +106,7 @@ class MainActivity : AppCompatActivity() {
     private fun startVpn() {
         startService(Intent(this, SimpleVpnService::class.java))
         isRunning = true
-        Glide.with(this).load(R.drawable.success).into(vpnButton)
+        loadGif(R.drawable.success)
         findViewById<TextView>(R.id.statusText).text = "Подключено"
         Toast.makeText(this, "VPN запущен", Toast.LENGTH_SHORT).show()
     }
@@ -107,7 +116,7 @@ class MainActivity : AppCompatActivity() {
         intent.action = "STOP"
         startService(intent)
         isRunning = false
-        Glide.with(this).load(R.drawable.loading).into(vpnButton)
+        loadGif(R.drawable.loading)
         findViewById<TextView>(R.id.statusText).text = "VPN отключен"
     }
 
