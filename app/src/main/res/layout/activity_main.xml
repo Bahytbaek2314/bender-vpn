@@ -20,7 +20,7 @@
             android:textColor="#FFFFFF"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:layout_marginBottom="32dp"/>
+            android:layout_marginBottom="16dp"/>
 
         <TextView
             android:id="@+id/statusText"
@@ -29,7 +29,17 @@
             android:text="Без подписки"
             android:textColor="#AAAAAA"
             android:textSize="16sp"
-            android:layout_marginBottom="24dp"/>
+            android:layout_marginBottom="32dp"/>
+
+        <Button
+            android:id="@+id/vpnButton"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:text="VPN"
+            android:textSize="24sp"
+            android:textColor="#FFFFFF"
+            android:background="#222222"
+            android:layout_marginBottom="32dp"/>
 
         <TextView
             android:id="@+id/serverText"
@@ -39,17 +49,7 @@
             android:textColor="#FFFFFF"
             android:textSize="18sp"
             android:padding="16dp"
-            android:background="#1E1E1E"
-            android:layout_marginBottom="48dp"/>
-
-        <Button
-            android:id="@+id/vpnButton"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:text="VPN"
-            android:textSize="24sp"
-            android:textColor="#FFFFFF"
-            android:background="#222222"/>
+            android:background="#1E1E1E"/>
 
     </LinearLayout>
 
