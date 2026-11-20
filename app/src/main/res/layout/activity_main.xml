@@ -10,46 +10,56 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="#0A0A0A"
-        android:gravity="center"
         android:padding="24dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Bender VPN"
             android:textColor="#FFFFFF"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp"/>
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"/>
 
-        <TextView
-            android:id="@+id/statusText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Без подписки"
-            android:textColor="#AAAAAA"
-            android:textSize="16sp"
-            android:layout_marginBottom="32dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
 
-        <Button
-            android:id="@+id/vpnButton"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:text="VPN"
-            android:textSize="24sp"
-            android:textColor="#FFFFFF"
-            android:background="#222222"
-            android:layout_marginBottom="32dp"/>
+            <TextView
+                android:id="@+id/statusText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Без подписки"
+                android:textColor="#AAAAAA"
+                android:textSize="16sp"
+                android:layout_marginBottom="32dp"/>
 
-        <TextView
-            android:id="@+id/serverText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="GERMANY • 23 ms"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:padding="16dp"
-            android:background="#1E1E1E"/>
+            <Button
+                android:id="@+id/vpnButton"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:text="VPN"
+                android:textSize="24sp"
+                android:textColor="#FFFFFF"
+                android:background="#222222"
+                android:layout_marginBottom="32dp"/>
+
+            <TextView
+                android:id="@+id/serverText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GERMANY • 23 ms"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:padding="16dp"
+                android:background="#1E1E1E"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
