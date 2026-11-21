@@ -9,62 +9,82 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#0A0A0A"
-        android:padding="24dp">
+        android:background="#0A0A0A">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bender VPN"
-            android:textColor="#FFFFFF"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_height="56dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <TextView
+                android:id="@+id/menuButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:gravity="center"
+                android:text="☰"
+                android:textColor="#FFFFFF"
+                android:textSize="26sp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Bender VPN"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="48dp"
+                android:layout_height="48dp"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:padding="24dp">
 
             <TextView
                 android:id="@+id/statusText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Без подписки"
+                android:text="Отключено"
                 android:textColor="#AAAAAA"
                 android:textSize="16sp"
-                android:layout_marginBottom="32dp"/>
+                android:layout_marginBottom="28dp"/>
 
-            <Button
+            <TextView
                 android:id="@+id/vpnButton"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="210dp"
+                android:layout_height="210dp"
+                android:gravity="center"
                 android:text="VPN"
-                android:textSize="24sp"
                 android:textColor="#FFFFFF"
-                android:background="#222222"
-                android:layout_marginBottom="32dp"/>
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:layout_marginBottom="28dp"/>
 
             <TextView
                 android:id="@+id/serverText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="GERMANY • 23 ms"
+                android:gravity="center"
+                android:text="GERMANY  •  23 ms"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
-                android:padding="16dp"
-                android:background="#1E1E1E"/>
-
+                android:padding="18dp"
+                android:background="#1A1A1A"/>
         </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="280dp"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:orientation="vertical"
@@ -78,16 +98,17 @@
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:layout_marginBottom="32dp"/>
+            android:layout_marginBottom="28dp"/>
 
         <TextView
             android:id="@+id/drawerStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="СТАТУС: Без подписки"
+            android:text="СТАТУС"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
-            android:padding="16dp"/>
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"/>
 
         <TextView
             android:id="@+id/importKey"
@@ -96,7 +117,8 @@
             android:text="ИМПОРТ КЛЮЧА"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
-            android:padding="16dp"/>
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"/>
 
         <TextView
             android:id="@+id/support"
@@ -105,7 +127,8 @@
             android:text="ПОДДЕРЖКА"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
-            android:padding="16dp"/>
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"/>
 
         <TextView
             android:id="@+id/telegram"
@@ -114,8 +137,17 @@
             android:text="НАШ TELEGRAM"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
-            android:padding="16dp"/>
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"/>
 
+        <TextView
+            android:id="@+id/settingsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="НАСТРОЙКИ"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"/>
     </LinearLayout>
-
 </androidx.drawerlayout.widget.DrawerLayout>

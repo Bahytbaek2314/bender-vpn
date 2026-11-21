@@ -16,9 +16,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ServerListActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".ServerListActivity" android:exported="false" />
+        <activity android:name=".SettingsActivity" android:exported="false" />
+        <activity android:name=".LoginActivity" android:exported="false" />
+        <activity android:name=".ImportActivity" android:exported="false" />
+        <activity android:name=".StatusActivity" android:exported="false" />
+        <activity android:name=".InfoActivity" android:exported="false" />
 
         <service
             android:name=".SimpleVpnService"
