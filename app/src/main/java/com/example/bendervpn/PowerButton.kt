@@ -1,11 +1,10 @@
 package com.example.bendervpn
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Movie
-import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
+import android.graphics.ImageDecoder
+import android.graphics.drawable.Animatable2
+import android.graphics.drawable.AnimatedImageDrawable
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 
@@ -14,84 +13,40 @@ class PowerButton @JvmOverloads constructor(
     attrs: AttributeSet? = null
 ) : AppCompatImageView(context, attrs) {
 
-    private var movie: Movie? = null
-    private var movieStart = 0L
-    private var looping = false
-    private var playing = false
-    private var onEnd: (() -> Unit)? = null
-    private val tick = Handler(Looper.getMainLooper())
-    private val frame = object : Runnable {
-        override fun run() {
-            val m = movie
-            if (!playing || m == null) return
-            val dur = if (m.duration() <= 0) 1000 else m.duration()
-            val rel = (SystemClock.uptimeMillis() - movieStart).toInt()
-            if (!looping && rel >= dur) {
-                m.setTime(dur - 1)
-                invalidate()
-                playing = false
-                val cb = onEnd
-                onEnd = null
-                cb?.invoke()
-                return
-            }
-            m.setTime(rel % dur)
-            invalidate()
-            tick.postDelayed(this, 16)
-        }
-    }
-
-    init {
-        setLayerType(LAYER_TYPE_SOFTWARE, null)
-    }
-
     fun showStill(resId: Int) {
-        stopMovie()
+        stopAnim()
         setImageResource(resId)
     }
 
     fun playRaw(rawId: Int, loop: Boolean, end: (() -> Unit)? = null) {
-        stopMovie()
-        setImageDrawable(null)
-        val input = resources.openRawResource(rawId)
-        movie = Movie.decodeStream(input)
-        input.close()
-        if (movie == null) {
-            end?.invoke()
-            return
+        stopAnim()
+        try {
+            val drawable = ImageDecoder.decodeDrawable(ImageDecoder.createSource(resources, rawId))
+            setImageDrawable(drawable)
+            if (drawable is AnimatedImageDrawable) {
+                drawable.repeatCount = if (loop) AnimatedImageDrawable.REPEAT_INFINITE else 0
+                if (!loop && end != null) {
+                    drawable.registerAnimationCallback(object : Animatable2.AnimationCallback() {
+                        override fun onAnimationEnd(d: Drawable?) {
+                            post { end.invoke() }
+                        }
+                    })
+                }
+                drawable.start()
+                return
+            }
+        } catch (e: Exception) {
         }
-        looping = loop
-        onEnd = end
-        playing = true
-        movieStart = SystemClock.uptimeMillis()
-        tick.post(frame)
+        end?.invoke()
     }
 
-    private fun stopMovie() {
-        playing = false
-        tick.removeCallbacks(frame)
-        movie = null
-        onEnd = null
-    }
-
-    override fun onDraw(canvas: Canvas) {
-        val m = movie
-        if (m == null) {
-            super.onDraw(canvas)
-            return
-        }
-        val mw = m.width().coerceAtLeast(1)
-        val mh = m.height().coerceAtLeast(1)
-        val s = minOf(width.toFloat() / mw, height.toFloat() / mh)
-        canvas.save()
-        canvas.translate((width - mw * s) / 2f, (height - mh * s) / 2f)
-        canvas.scale(s, s)
-        m.draw(canvas, 0f, 0f)
-        canvas.restore()
+    private fun stopAnim() {
+        val current = drawable
+        if (current is AnimatedImageDrawable) current.stop()
     }
 
     override fun onDetachedFromWindow() {
-        stopMovie()
+        stopAnim()
         super.onDetachedFromWindow()
     }
 }
