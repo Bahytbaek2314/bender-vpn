@@ -23,7 +23,7 @@
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:gravity="center"
-                android:text="☰"
+                android:text="Menu"
                 android:textColor="#FFFFFF"
                 android:textSize="26sp"/>
 
@@ -59,16 +59,12 @@
                 android:textSize="16sp"
                 android:layout_marginBottom="28dp"/>
 
-            <TextView
+            <com.example.bendervpn.PowerButton
                 android:id="@+id/vpnButton"
-                android:layout_width="210dp"
-                android:layout_height="210dp"
-                android:gravity="center"
-                android:text="VPN"
-                android:textColor="#FFFFFF"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="28dp"/>
+                android:layout_width="260dp"
+                android:layout_height="260dp"
+                android:layout_marginBottom="28dp"
+                android:scaleType="fitCenter"/>
 
             <TextView
                 android:id="@+id/serverText"
@@ -104,7 +100,7 @@
             android:id="@+id/drawerStatus"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="СТАТУС"
+            android:text="STATUS"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:paddingTop="14dp"
@@ -114,7 +110,7 @@
             android:id="@+id/importKey"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ИМПОРТ КЛЮЧА"
+            android:text="IMPORT KEY"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:paddingTop="14dp"
@@ -124,7 +120,7 @@
             android:id="@+id/support"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ПОДДЕРЖКА"
+            android:text="SUPPORT"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:paddingTop="14dp"
@@ -134,7 +130,7 @@
             android:id="@+id/telegram"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="НАШ TELEGRAM"
+            android:text="OUR TELEGRAM"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:paddingTop="14dp"
@@ -144,7 +140,7 @@
             android:id="@+id/settingsButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="НАСТРОЙКИ"
+            android:text="SETTINGS"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:paddingTop="14dp"

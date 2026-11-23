@@ -1,7 +1,6 @@
 package com.example.bendervpn
 
 import android.content.Intent
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,7 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 class MainActivity : AppCompatActivity() {
 
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var vpnButton: TextView
+    private lateinit var vpnButton: PowerButton
     private lateinit var statusText: TextView
     private lateinit var serverText: TextView
 
@@ -87,13 +86,20 @@ class MainActivity : AppCompatActivity() {
     private fun onPower() {
         if (state == 0) {
             state = 1
-            paint()
-            val task = Runnable {
-                state = 2
-                paint()
+            statusText.text = "Подключение..."
+            statusText.setTextColor(0xFFB388FF.toInt())
+            prefs.edit().putString("link_state", "Подключение...").apply()
+            vpnButton.playRaw(R.raw.press, false) {
+                if (state != 1) return@playRaw
+                vpnButton.playRaw(R.raw.loading, true, null)
+                val task = Runnable {
+                    if (state != 1) return@Runnable
+                    state = 2
+                    paint()
+                }
+                connectRunnable = task
+                handler.postDelayed(task, 1800)
             }
-            connectRunnable = task
-            handler.postDelayed(task, 1600)
         } else {
             connectRunnable?.let { handler.removeCallbacks(it) }
             state = 0
@@ -102,33 +108,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun paint() {
-        val bg = GradientDrawable()
-        bg.shape = GradientDrawable.OVAL
         val label: String
         val color: Int
-        val word: String
-        when (state) {
-            1 -> {
-                bg.setColor(0xFF3A2200.toInt())
-                label = "Подключение..."
-                color = 0xFFFF6B00.toInt()
-                word = "..."
-            }
-            2 -> {
-                bg.setColor(0xFF12301A.toInt())
-                label = "Подключено"
-                color = 0xFF3DDC84.toInt()
-                word = "ON"
-            }
-            else -> {
-                bg.setColor(0xFF1A1A1A.toInt())
-                label = "Отключено"
-                color = 0xFFAAAAAA.toInt()
-                word = "VPN"
-            }
+        if (state == 2) {
+            vpnButton.showStill(R.drawable.vpn_connected)
+            label = "Подключено"
+            color = 0xFFB388FF.toInt()
+        } else {
+            vpnButton.showStill(R.drawable.vpn_button)
+            label = "Отключено"
+            color = 0xFFAAAAAA.toInt()
         }
-        vpnButton.background = bg
-        vpnButton.text = word
         statusText.text = label
         statusText.setTextColor(color)
         prefs.edit().putString("link_state", label).apply()
