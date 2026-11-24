@@ -25,7 +25,7 @@ class GlowBackground @JvmOverloads constructor(
         val cy = height * 0.46f
         paint.shader = RadialGradient(
             cx, cy, width * 0.95f,
-            intArrayOf(0x66B388FF, 0x22101828, 0xFF050505),
+            intArrayOf(0x66B388FF.toInt(), 0x22101828.toInt(), 0xFF050505.toInt()),
             floatArrayOf(0f, 0.42f, 1f),
             Shader.TileMode.CLAMP
         )
