@@ -93,6 +93,16 @@ class PowerButton @JvmOverloads constructor(
             canvas.drawCircle(cx - headR * 0.36f - eyeR * 0.28f, eyeY - eyeR * 0.30f, eyeR * 0.22f, paint)
             canvas.drawCircle(cx + headR * 0.36f - eyeR * 0.28f, eyeY - eyeR * 0.30f, eyeR * 0.22f, paint)
             paint.style = Paint.Style.STROKE
+            paint.color = 0xFF1C1024.toInt()
+            paint.strokeWidth = stroke * 0.38f
+            val lensR = r * 0.090f
+            val leftX = cx - headR * 0.36f
+            val rightX = cx + headR * 0.36f
+            canvas.drawCircle(leftX, eyeY, lensR, paint)
+            canvas.drawCircle(rightX, eyeY, lensR, paint)
+            canvas.drawLine(leftX + lensR, eyeY, rightX - lensR, eyeY, paint)
+            canvas.drawLine(leftX - lensR, eyeY - lensR * 0.15f, leftX - lensR - r * 0.06f, eyeY - lensR * 0.55f, paint)
+            canvas.drawLine(rightX + lensR, eyeY - lensR * 0.15f, rightX + lensR + r * 0.06f, eyeY - lensR * 0.55f, paint)
             paint.strokeWidth = stroke
         }
     }
