@@ -1,4 +1,4 @@
-﻿package com.example.bendervpn
+package com.example.bendervpn
 
 import android.content.Intent
 import android.os.Bundle
@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
         showServer()
         paint()
 
-        findViewById<TextView>(R.id.menuButton).setOnClickListener {
+        findViewById<android.view.View>(R.id.menuButton).setOnClickListener {
             drawerLayout.openDrawer(GravityCompat.START)
         }
 
@@ -48,19 +48,19 @@ class MainActivity : AppCompatActivity() {
             startActivityForResult(Intent(this, ServerListActivity::class.java), 42)
         }
 
-        findViewById<TextView>(R.id.drawerStatus).setOnClickListener {
+        findViewById<android.view.View>(R.id.drawerStatus).setOnClickListener {
             open(StatusActivity::class.java)
         }
-        findViewById<TextView>(R.id.importKey).setOnClickListener {
+        findViewById<android.view.View>(R.id.importKey).setOnClickListener {
             open(ImportActivity::class.java)
         }
-        findViewById<TextView>(R.id.support).setOnClickListener {
+        findViewById<android.view.View>(R.id.support).setOnClickListener {
             openInfo("Поддержка", "Сюда позже встанет почта и чат. Сейчас это пустой экран каркаса.")
         }
-        findViewById<TextView>(R.id.telegram).setOnClickListener {
+        findViewById<android.view.View>(R.id.telegram).setOnClickListener {
             openInfo("Наш Telegram", "Ссылку на канал поставим, когда она будет. Сейчас экран только занимает место в меню.")
         }
-        findViewById<TextView>(R.id.settingsButton).setOnClickListener {
+        findViewById<android.view.View>(R.id.settingsButton).setOnClickListener {
             open(SettingsActivity::class.java)
         }
     }
