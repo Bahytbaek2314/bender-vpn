@@ -68,7 +68,8 @@
 
                 
             </LinearLayout>
-        C:\Users\bahat</LinearLayout>
+                    <LinearLayout android:id="@+id/homeServers" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:paddingLeft="24dp" android:paddingRight="24dp" android:paddingBottom="16dp"/>
+        </LinearLayout>
     </FrameLayout>
 
     <LinearLayout
