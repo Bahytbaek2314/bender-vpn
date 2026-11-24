@@ -1,4 +1,4 @@
-package com.example.bendervpn
+﻿package com.example.bendervpn
 
 import android.content.Intent
 import android.os.Bundle
@@ -86,20 +86,14 @@ class MainActivity : AppCompatActivity() {
     private fun onPower() {
         if (state == 0) {
             state = 1
-            statusText.text = "Подключение..."
-            statusText.setTextColor(0xFFB388FF.toInt())
-            prefs.edit().putString("link_state", "Подключение...").apply()
-            vpnButton.playRaw(R.raw.press, false) {
-                if (state != 1) return@playRaw
-                vpnButton.playRaw(R.raw.loading, true, null)
-                val task = Runnable {
-                    if (state != 1) return@Runnable
-                    state = 2
-                    paint()
-                }
-                connectRunnable = task
-                handler.postDelayed(task, 1800)
+            paint()
+            val task = Runnable {
+                if (state != 1) return@Runnable
+                state = 2
+                paint()
             }
+            connectRunnable = task
+            handler.postDelayed(task, 1600)
         } else {
             connectRunnable?.let { handler.removeCallbacks(it) }
             state = 0
@@ -111,11 +105,15 @@ class MainActivity : AppCompatActivity() {
         val label: String
         val color: Int
         if (state == 2) {
-            vpnButton.showStill(R.drawable.vpn_connected)
+            vpnButton.setMode(2)
             label = "Подключено"
             color = 0xFFB388FF.toInt()
+        } else if (state == 1) {
+            vpnButton.setMode(1)
+            label = "Подключение..."
+            color = 0xFFB388FF.toInt()
         } else {
-            vpnButton.showStill(R.drawable.vpn_button)
+            vpnButton.setMode(0)
             label = "Отключено"
             color = 0xFFAAAAAA.toInt()
         }
