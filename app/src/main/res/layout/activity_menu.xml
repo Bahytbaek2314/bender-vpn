@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="280dp"
     android:layout_height="match_parent"
@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Bender VPN"
+            android:text=""
             android:textColor="#FFFFFF"
             android:textSize="22sp"
             android:textStyle="bold"
@@ -25,7 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:gravity="center_vertical"
-            android:text="Импорт ключа"
+            android:text="РРјРїРѕСЂС‚ РєР»СЋС‡Р°"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:paddingStart="8dp" />
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:gravity="center_vertical"
-            android:text="Настройки"
+            android:text="РќР°СЃС‚СЂРѕР№РєРё"
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:paddingStart="8dp" />
@@ -51,9 +51,10 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:gravity="center_vertical"
-            android:text="Выйти"
+            android:text="Р’С‹Р№С‚Рё"
             android:textColor="#FF6B00"
             android:textSize="16sp"
             android:paddingStart="8dp" />
     </LinearLayout>
 </ScrollView>
+

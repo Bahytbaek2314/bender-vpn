@@ -63,13 +63,11 @@ class ServerListActivity : AppCompatActivity() {
 
             row.addView(flag)
             row.addView(title)
-            if (chosen) {
-                val crown = CrownView(this)
-                val crownParams = LinearLayout.LayoutParams(dp(22), dp(22))
-                crownParams.marginEnd = dp(10)
-                crown.layoutParams = crownParams
-                row.addView(crown)
-            }
+            val crown = CrownView(this)
+            val crownParams = LinearLayout.LayoutParams(dp(22), dp(22))
+            crownParams.marginEnd = dp(10)
+            crown.layoutParams = crownParams
+            row.addView(crown)
 
             val pingView = TextView(this)
             pingView.text = ping
@@ -85,3 +83,4 @@ class ServerListActivity : AppCompatActivity() {
         }
     }
 }
+
