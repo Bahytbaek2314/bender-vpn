@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var serverText: TextView
     private lateinit var pingText: TextView
     private lateinit var signalBars: SignalBars
+    private lateinit var homeFlag: FlagView
 
     private val handler = Handler(Looper.getMainLooper())
     private var connectRunnable: Runnable? = null
@@ -34,7 +35,13 @@ class MainActivity : AppCompatActivity() {
         serverText = findViewById(R.id.serverText)
         pingText = findViewById(R.id.pingText)
         signalBars = findViewById(R.id.signalBars)
-        findViewById<android.view.View>(R.id.serverRow).setOnClickListener {
+        homeFlag = findViewById(R.id.homeFlag)
+        val serverRow = findViewById<android.widget.LinearLayout>(R.id.serverRow)
+        val shape = android.graphics.drawable.GradientDrawable()
+        shape.setColor(0xFF161616.toInt())
+        shape.cornerRadius = 18f * resources.displayMetrics.density
+        serverRow.background = shape
+        serverRow.setOnClickListener {
             startActivityForResult(Intent(this, ServerListActivity::class.java), 42)
         }
 
@@ -90,6 +97,15 @@ class MainActivity : AppCompatActivity() {
         val digits = ping?.filter { it.isDigit() } ?: ""
         val ms = if (digits.isEmpty()) 99 else digits.toInt()
         signalBars.pingMs = ms
+        pingText.setTextColor(if (ms <= 80) 0xFF3DDC84.toInt() else 0xFFFF4D4D.toInt())
+        homeFlag.code = when (name) {
+            "FRANCE" -> "FR"
+            "ENGLAND" -> "GB"
+            "NETHERLANDS" -> "NL"
+            "RUSSIA" -> "RU"
+            else -> "DE"
+        }
+        homeFlag.invalidate()
     }
 
     private fun onPower() {

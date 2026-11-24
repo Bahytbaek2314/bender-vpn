@@ -68,9 +68,11 @@
 
                 
                             <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/serverRow" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="28dp" android:padding="16dp" android:background="#1A1A1A">
-                    <TextView android:id="@+id/serverText" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="GERMANY" android:textColor="#FFFFFF" android:textSize="18sp"/>
-                    <TextView android:id="@+id/pingText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="12dp" android:text="23 ms" android:textColor="#FFFFFF" android:textSize="16sp"/>
-                    <com.example.bendervpn.SignalBars android:id="@+id/signalBars" android:layout_width="28dp" android:layout_height="20dp"/>
+                    <com.example.bendervpn.FlagView android:id="@+id/homeFlag" android:layout_width="34dp" android:layout_height="22dp" android:layout_marginRight="12dp"/>
+                    <TextView android:id="@+id/serverText" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="GERMANY" android:textColor="#FFFFFF" android:textSize="16sp"/>
+                    <TextView android:id="@+id/pingText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10dp" android:text="23 ms" android:textColor="#3DDC84" android:textSize="14sp"/>
+                    <com.example.bendervpn.SignalBars android:id="@+id/signalBars" android:layout_width="34dp" android:layout_height="18dp"/>
+                    <TextView android:id="@+id/serverArrow" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8dp" android:text=">" android:textColor="#888888" android:textSize="18sp"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
