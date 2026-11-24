@@ -64,21 +64,11 @@
                     android:id="@+id/vpnButton"
                     android:layout_width="260dp"
                     android:layout_height="260dp"
-                    android:layout_marginBottom="28dp"
                     android:scaleType="fitCenter"/>
 
-                <TextView
-                    android:id="@+id/serverText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="GERMANY  -  23 ms"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp"
-                    android:padding="18dp"
-                    android:background="#1A1A1A"/>
+                
             </LinearLayout>
-        </LinearLayout>
+        C:\Users\bahat</LinearLayout>
     </FrameLayout>
 
     <LinearLayout

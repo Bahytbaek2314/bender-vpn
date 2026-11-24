@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var vpnButton: PowerButton
     private lateinit var statusText: TextView
-    private lateinit var serverText: TextView
+    private lateinit var homeServers: android.widget.LinearLayout
 
     private val handler = Handler(Looper.getMainLooper())
     private var connectRunnable: Runnable? = null
@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         drawerLayout = findViewById(R.id.drawerLayout)
         vpnButton = findViewById(R.id.vpnButton)
         statusText = findViewById(R.id.statusText)
-        serverText = findViewById(R.id.serverText)
+        homeServers = findViewById(R.id.homeServers)
 
         if (!prefs.contains("server")) {
             prefs.edit().putString("server", "GERMANY").putString("ping", "23 ms").apply()
@@ -44,9 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         vpnButton.setOnClickListener { onPower() }
 
-        serverText.setOnClickListener {
-            startActivityForResult(Intent(this, ServerListActivity::class.java), 42)
-        }
+
 
         findViewById<android.view.View>(R.id.drawerStatus).setOnClickListener {
             open(StatusActivity::class.java)
@@ -78,9 +76,70 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showServer() {
-        val name = prefs.getString("server", "GERMANY")
-        val ping = prefs.getString("ping", "23 ms")
-        serverText.text = "$name  •  $ping"
+        val selected = prefs.getString("server", "GERMANY")
+        homeServers.removeAllViews()
+        val density = resources.displayMetrics.density
+        fun dp(v: Int) = (v * density).toInt()
+        val servers = listOf(
+            "GERMANY" to "23 ms",
+            "FRANCE" to "29 ms",
+            "ENGLAND" to "41 ms",
+            "NETHERLANDS" to "26 ms",
+            "RUSSIA" to "19 ms"
+        )
+        servers.forEach { pair ->
+            val name = pair.first
+            val ping = pair.second
+            val chosen = name == selected
+            val row = android.widget.LinearLayout(this)
+            row.orientation = android.widget.LinearLayout.HORIZONTAL
+            row.gravity = android.view.Gravity.CENTER_VERTICAL
+            row.setPadding(dp(12), dp(10), dp(12), dp(10))
+            row.setBackgroundColor(if (chosen) 0xFF1C1428.toInt() else 0xFF1A1A1A.toInt())
+            val params = android.widget.LinearLayout.LayoutParams(
+                android.widget.LinearLayout.LayoutParams.MATCH_PARENT,
+                android.widget.LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            params.bottomMargin = dp(8)
+            row.layoutParams = params
+            val flag = FlagView(this)
+            flag.code = when (name) {
+                "FRANCE" -> "FR"
+                "ENGLAND" -> "GB"
+                "NETHERLANDS" -> "NL"
+                "RUSSIA" -> "RU"
+                else -> "DE"
+            }
+            flag.chosen = chosen
+            val flagParams = android.widget.LinearLayout.LayoutParams(dp(36), dp(24))
+            flagParams.marginEnd = dp(10)
+            flag.layoutParams = flagParams
+            val title = TextView(this)
+            title.text = name
+            title.textSize = 14f
+            title.setTextColor(if (chosen) 0xFFB388FF.toInt() else 0xFFFFFFFF.toInt())
+            title.layoutParams = android.widget.LinearLayout.LayoutParams(0, android.widget.LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            row.addView(flag)
+            row.addView(title)
+            val crown = CrownView(this)
+            val crownParams = android.widget.LinearLayout.LayoutParams(dp(16), dp(16))
+            crownParams.marginEnd = dp(8)
+            crown.layoutParams = crownParams
+            row.addView(crown)
+            val pingView = TextView(this)
+            pingView.text = ping
+            pingView.textSize = 13f
+            pingView.setTextColor(0xFF00D4FF.toInt())
+            row.addView(pingView)
+            row.setOnClickListener {
+                prefs.edit().putString("server", name).putString("ping", ping).apply()
+                connectRunnable?.let { handler.removeCallbacks(it) }
+                state = 0
+                showServer()
+                paint()
+            }
+            homeServers.addView(row)
+        }
     }
 
     private fun onPower() {
