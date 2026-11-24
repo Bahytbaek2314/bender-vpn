@@ -1,7 +1,8 @@
-package com.example.bendervpn
+﻿package com.example.bendervpn
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -28,10 +29,12 @@ class ServerListActivity : AppCompatActivity() {
         fun dp(v: Int) = (v * density).toInt()
 
         servers.forEach { (name, ping) ->
+            val chosen = name == selected
             val row = LinearLayout(this)
             row.orientation = LinearLayout.HORIZONTAL
-            row.setPadding(dp(16), dp(18), dp(16), dp(18))
-            row.setBackgroundColor(0xFF1A1A1A.toInt())
+            row.gravity = Gravity.CENTER_VERTICAL
+            row.setPadding(dp(14), dp(14), dp(14), dp(14))
+            row.setBackgroundColor(if (chosen) 0xFF1C1428.toInt() else 0xFF1A1A1A.toInt())
             val params = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -39,19 +42,41 @@ class ServerListActivity : AppCompatActivity() {
             params.bottomMargin = dp(10)
             row.layoutParams = params
 
+            val flag = FlagView(this)
+            flag.code = when (name) {
+                "FRANCE" -> "FR"
+                "ENGLAND" -> "GB"
+                "NETHERLANDS" -> "NL"
+                "RUSSIA" -> "RU"
+                else -> "DE"
+            }
+            flag.chosen = chosen
+            val flagParams = LinearLayout.LayoutParams(dp(46), dp(32))
+            flagParams.marginEnd = dp(14)
+            flag.layoutParams = flagParams
+
             val title = TextView(this)
             title.text = name
             title.textSize = 16f
-            title.setTextColor(if (name == selected) 0xFFFF6B00.toInt() else 0xFFFFFFFF.toInt())
+            title.setTextColor(if (chosen) 0xFFB388FF.toInt() else 0xFFFFFFFF.toInt())
             title.layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+
+            row.addView(flag)
+            row.addView(title)
+            if (chosen) {
+                val crown = CrownView(this)
+                val crownParams = LinearLayout.LayoutParams(dp(22), dp(22))
+                crownParams.marginEnd = dp(10)
+                crown.layoutParams = crownParams
+                row.addView(crown)
+            }
 
             val pingView = TextView(this)
             pingView.text = ping
             pingView.textSize = 14f
             pingView.setTextColor(0xFF00D4FF.toInt())
-
-            row.addView(title)
             row.addView(pingView)
+
             row.setOnClickListener {
                 setResult(RESULT_OK, Intent().putExtra("server", name).putExtra("ping", ping))
                 finish()
