@@ -22,7 +22,7 @@ class GlowBackground @JvmOverloads constructor(
 
     override fun onDraw(canvas: Canvas) {
         val cx = width / 2f
-        val cy = height * 0.40f
+        val cy = height * 0.46f
         paint.shader = RadialGradient(
             cx, cy, width * 0.95f,
             intArrayOf(0x66B388FF.toInt(), 0x22101828.toInt(), 0xFF050505.toInt()),
