@@ -45,19 +45,28 @@ class LineIcon @JvmOverloads constructor(
         strokeJoin = Paint.Join.ROUND
     }
     private val path = Path()
+    var accent = false
+        set(value) {
+            field = value
+            invalidate()
+        }
 
     override fun onDraw(canvas: Canvas) {
         val w = width.toFloat()
         val h = height.toFloat()
         paint.strokeWidth = min(w, h) * 0.09f
         paint.style = Paint.Style.STROKE
-        paint.color = Color.WHITE
+        paint.color = if (accent) 0xFFB388FF.toInt() else 0xFF8E8E8E.toInt()
         when (tag?.toString()) {
             "bars" -> bars(canvas, w, h)
             "status" -> status(canvas, w, h)
             "key" -> key(canvas, w, h)
             "chat" -> chat(canvas, w, h)
             "plane" -> plane(canvas, w, h)
+            "home" -> home(canvas, w, h)
+            "crown" -> crown(canvas, w, h)
+            "globe" -> globe(canvas, w, h)
+            "user" -> user(canvas, w, h)
             else -> gear(canvas, w, h)
         }
     }
@@ -100,6 +109,42 @@ class LineIcon @JvmOverloads constructor(
         path.close()
         c.drawPath(path, paint)
         c.drawLine(w * 0.48f, h * 0.54f, w * 0.78f, h * 0.28f, paint)
+    }
+
+    private fun home(c: Canvas, w: Float, h: Float) {
+        path.reset()
+        path.moveTo(w * 0.18f, h * 0.48f)
+        path.lineTo(w * 0.50f, h * 0.20f)
+        path.lineTo(w * 0.82f, h * 0.48f)
+        c.drawPath(path, paint)
+        c.drawRoundRect(android.graphics.RectF(w * 0.30f, h * 0.46f, w * 0.70f, h * 0.80f), w * 0.04f, w * 0.04f, paint)
+    }
+
+    private fun crown(c: Canvas, w: Float, h: Float) {
+        path.reset()
+        path.moveTo(w * 0.16f, h * 0.72f)
+        path.lineTo(w * 0.26f, h * 0.38f)
+        path.lineTo(w * 0.40f, h * 0.54f)
+        path.lineTo(w * 0.50f, h * 0.26f)
+        path.lineTo(w * 0.60f, h * 0.54f)
+        path.lineTo(w * 0.74f, h * 0.38f)
+        path.lineTo(w * 0.84f, h * 0.72f)
+        path.close()
+        c.drawPath(path, paint)
+    }
+
+    private fun globe(c: Canvas, w: Float, h: Float) {
+        c.drawCircle(w / 2f, h / 2f, w * 0.32f, paint)
+        c.drawLine(w * 0.18f, h / 2f, w * 0.82f, h / 2f, paint)
+        c.drawOval(android.graphics.RectF(w * 0.36f, h * 0.18f, w * 0.64f, h * 0.82f), paint)
+    }
+
+    private fun user(c: Canvas, w: Float, h: Float) {
+        c.drawCircle(w / 2f, h * 0.34f, w * 0.14f, paint)
+        path.reset()
+        path.moveTo(w * 0.22f, h * 0.82f)
+        path.quadTo(w * 0.50f, h * 0.50f, w * 0.78f, h * 0.82f)
+        c.drawPath(path, paint)
     }
 
     private fun gear(c: Canvas, w: Float, h: Float) {

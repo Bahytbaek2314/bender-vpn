@@ -1,52 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.drawerlayout.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawerLayout"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#050505">
 
-    <FrameLayout
+    <com.example.bendervpn.GlowBackground
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#050505">
+        android:orientation="vertical">
 
-        <com.example.bendervpn.GlowBackground
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="#00000000">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
             <LinearLayout
+                android:id="@+id/homePage"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:gravity="center_vertical"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp">
-
-                <com.example.bendervpn.LineIcon
-                    android:id="@+id/menuButton"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:tag="bars"/>
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1dp"
-                    android:layout_weight="1"/>
-
-                <View
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"/>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center"
                 android:padding="24dp">
@@ -55,7 +30,7 @@
                     android:id="@+id/statusText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Offline"
+                    android:text="Отключено"
                     android:textColor="#AAAAAA"
                     android:textSize="16sp"
                     android:layout_marginBottom="28dp"/>
@@ -66,87 +41,265 @@
                     android:layout_height="260dp"
                     android:scaleType="fitCenter"/>
 
-                
-                            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:id="@+id/serverRow" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginTop="28dp" android:padding="16dp" android:background="#1A1A1A">
-                    <com.example.bendervpn.FlagView android:id="@+id/homeFlag" android:layout_width="34dp" android:layout_height="22dp" android:layout_marginRight="12dp"/>
-                    <TextView android:id="@+id/serverText" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="GERMANY" android:textColor="#FFFFFF" android:textSize="16sp"/>
-                    <TextView android:id="@+id/pingText" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="10dp" android:text="23 ms" android:textColor="#3DDC84" android:textSize="14sp"/>
-                    <com.example.bendervpn.SignalBars android:id="@+id/signalBars" android:layout_width="34dp" android:layout_height="18dp"/>
-                    <TextView android:id="@+id/serverArrow" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8dp" android:text=">" android:textColor="#888888" android:textSize="18sp"/>
+                <LinearLayout
+                    android:id="@+id/serverRow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="28dp"
+                    android:padding="16dp"
+                    android:background="#1A1A1A">
+
+                    <com.example.bendervpn.FlagView
+                        android:id="@+id/homeFlag"
+                        android:layout_width="34dp"
+                        android:layout_height="22dp"
+                        android:layout_marginRight="12dp"/>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/serverText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Германия"
+                            android:textColor="#FFFFFF"
+                            android:textSize="16sp"/>
+                        <TextView
+                            android:id="@+id/cityText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Франкфурт"
+                            android:textColor="#8E8E8E"
+                            android:textSize="13sp"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/pingText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:text="23 ms"
+                        android:textColor="#3DDC84"
+                        android:textSize="14sp"/>
+                    <com.example.bendervpn.SignalBars
+                        android:id="@+id/signalBars"
+                        android:layout_width="34dp"
+                        android:layout_height="18dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text=">"
+                        android:textColor="#888888"
+                        android:textSize="18sp"/>
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
-    </FrameLayout>
 
-    <LinearLayout
-        android:layout_width="300dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:orientation="vertical"
-        android:background="#111111"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingTop="36dp"
-        android:paddingBottom="20dp">
+            <ScrollView
+                android:id="@+id/proPage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:fillViewport="true">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="24dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pro"
+                        android:textColor="#FFFFFF"
+                        android:textSize="32sp"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="22dp"
+                        android:text="Бесплатные серверы уже работают. Pro откроет остальные."
+                        android:textColor="#AAAAAA"
+                        android:textSize="15sp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Англия и Нидерланды"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:paddingTop="14dp"
+                        android:paddingBottom="14dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Без ограничения по времени"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:paddingTop="14dp"
+                        android:paddingBottom="14dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Аккаунт для Pro-серверов"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"
+                        android:paddingTop="14dp"
+                        android:paddingBottom="14dp"/>
+                    <TextView
+                        android:id="@+id/proButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="52dp"
+                        android:layout_marginTop="28dp"
+                        android:gravity="center"
+                        android:text="Оплата позже"
+                        android:textColor="#FFFFFF"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+            </ScrollView>
+
+            <LinearLayout
+                android:id="@+id/locationsPage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="24dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Локации"
+                    android:textColor="#FFFFFF"
+                    android:textSize="32sp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="16dp"/>
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:id="@+id/locationsBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingBottom="12dp"/>
+                </ScrollView>
+            </LinearLayout>
+
+            <ScrollView
+                android:id="@+id/settingsPage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:fillViewport="true">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Настройки"
+                        android:textColor="#FFFFFF"
+                        android:textSize="32sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="16dp"/>
+                    <LinearLayout android:id="@+id/rowStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="16dp" android:layout_marginBottom="10dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Статус" android:textColor="#FFFFFF" android:textSize="16sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/rowImport" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="16dp" android:layout_marginBottom="10dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Импорт ключа" android:textColor="#FFFFFF" android:textSize="16sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/rowSupport" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="16dp" android:layout_marginBottom="10dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Поддержка" android:textColor="#FFFFFF" android:textSize="16sp"/>
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/rowTelegram" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="16dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Наш Telegram" android:textColor="#FFFFFF" android:textSize="16sp"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </ScrollView>
+
+            <LinearLayout
+                android:id="@+id/accountPage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:padding="24dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Аккаунт"
+                    android:textColor="#FFFFFF"
+                    android:textSize="32sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="24dp"
+                    android:text="Бесплатные серверы работают без входа. Для Pro нужен аккаунт."
+                    android:textColor="#AAAAAA"
+                    android:textSize="15sp"/>
+                <TextView
+                    android:id="@+id/loginButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:gravity="center"
+                    android:text="Войти"
+                    android:textColor="#FFFFFF"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+        </FrameLayout>
 
         <LinearLayout
-            android:id="@+id/drawerStatus"
+            android:id="@+id/bottomBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="74dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginBottom="14dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:paddingTop="14dp"
-            android:paddingBottom="14dp">
-            <com.example.bendervpn.LineIcon android:layout_width="22dp" android:layout_height="22dp" android:tag="status"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="14dp" android:text="STATUS" android:textColor="#FFFFFF" android:textSize="16sp"/>
-        </LinearLayout>
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp">
 
-        <LinearLayout
-            android:id="@+id/importKey"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingTop="14dp"
-            android:paddingBottom="14dp">
-            <com.example.bendervpn.LineIcon android:layout_width="22dp" android:layout_height="22dp" android:tag="key"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="14dp" android:text="IMPORT KEY" android:textColor="#FFFFFF" android:textSize="16sp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/support"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingTop="14dp"
-            android:paddingBottom="14dp">
-            <com.example.bendervpn.LineIcon android:layout_width="22dp" android:layout_height="22dp" android:tag="chat"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="14dp" android:text="SUPPORT" android:textColor="#FFFFFF" android:textSize="16sp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/telegram"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingTop="14dp"
-            android:paddingBottom="14dp">
-            <com.example.bendervpn.LineIcon android:layout_width="22dp" android:layout_height="22dp" android:tag="plane"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="14dp" android:text="OUR TELEGRAM" android:textColor="#FFFFFF" android:textSize="16sp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/settingsButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingTop="14dp"
-            android:paddingBottom="14dp">
-            <com.example.bendervpn.LineIcon android:layout_width="22dp" android:layout_height="22dp" android:tag="gear"/>
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="14dp" android:text="SETTINGS" android:textColor="#FFFFFF" android:textSize="16sp"/>
+            <LinearLayout android:id="@+id/tabHome" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                <FrameLayout android:id="@+id/bubbleHome" android:layout_width="34dp" android:layout_height="34dp">
+                    <com.example.bendervpn.LineIcon android:id="@+id/iconHome" android:layout_width="match_parent" android:layout_height="match_parent" android:tag="home"/>
+                </FrameLayout>
+                <TextView android:id="@+id/labelHome" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Главная" android:textColor="#8E8E8E" android:textSize="10sp"/>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/tabPro" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                <FrameLayout android:id="@+id/bubblePro" android:layout_width="34dp" android:layout_height="34dp">
+                    <com.example.bendervpn.LineIcon android:id="@+id/iconPro" android:layout_width="match_parent" android:layout_height="match_parent" android:tag="crown"/>
+                </FrameLayout>
+                <TextView android:id="@+id/labelPro" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Pro" android:textColor="#8E8E8E" android:textSize="10sp"/>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/tabLocations" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                <FrameLayout android:id="@+id/bubbleLocations" android:layout_width="34dp" android:layout_height="34dp">
+                    <com.example.bendervpn.LineIcon android:id="@+id/iconLocations" android:layout_width="match_parent" android:layout_height="match_parent" android:tag="globe"/>
+                </FrameLayout>
+                <TextView android:id="@+id/labelLocations" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Локации" android:textColor="#8E8E8E" android:textSize="10sp"/>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/tabSettings" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                <FrameLayout android:id="@+id/bubbleSettings" android:layout_width="34dp" android:layout_height="34dp">
+                    <com.example.bendervpn.LineIcon android:id="@+id/iconSettings" android:layout_width="match_parent" android:layout_height="match_parent" android:tag="gear"/>
+                </FrameLayout>
+                <TextView android:id="@+id/labelSettings" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Настройки" android:textColor="#8E8E8E" android:textSize="10sp"/>
+            </LinearLayout>
+            <LinearLayout android:id="@+id/tabAccount" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+                <FrameLayout android:id="@+id/bubbleAccount" android:layout_width="34dp" android:layout_height="34dp">
+                    <com.example.bendervpn.LineIcon android:id="@+id/iconAccount" android:layout_width="match_parent" android:layout_height="match_parent" android:tag="user"/>
+                </FrameLayout>
+                <TextView android:id="@+id/labelAccount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Аккаунт" android:textColor="#8E8E8E" android:textSize="10sp"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-</androidx.drawerlayout.widget.DrawerLayout>
+</FrameLayout>

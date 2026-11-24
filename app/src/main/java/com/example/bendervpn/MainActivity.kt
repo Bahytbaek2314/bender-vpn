@@ -1,110 +1,255 @@
 package com.example.bendervpn
 
 import android.content.Intent
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.Gravity
+import android.view.View
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var drawerLayout: DrawerLayout
     private lateinit var vpnButton: PowerButton
     private lateinit var statusText: TextView
     private lateinit var serverText: TextView
+    private lateinit var cityText: TextView
     private lateinit var pingText: TextView
     private lateinit var signalBars: SignalBars
     private lateinit var homeFlag: FlagView
+    private lateinit var locationsBox: LinearLayout
+    private lateinit var pages: List<View>
+    private lateinit var icons: List<LineIcon>
+    private lateinit var labels: List<TextView>
+    private lateinit var bubbles: List<View>
 
     private val handler = Handler(Looper.getMainLooper())
     private var connectRunnable: Runnable? = null
     private var state = 0
-
     private val prefs by lazy { getSharedPreferences("vpn", MODE_PRIVATE) }
+
+    private data class Place(
+        val key: String,
+        val title: String,
+        val city: String,
+        val ping: String,
+        val pro: Boolean
+    )
+
+    private val places = listOf(
+        Place("GERMANY", "Германия", "Франкфурт", "23 ms", false),
+        Place("FRANCE", "Франция", "Париж", "29 ms", false),
+        Place("RUSSIA", "Россия", "Москва", "19 ms", false),
+        Place("ENGLAND", "Англия", "Лондон", "41 ms", true),
+        Place("NETHERLANDS", "Нидерланды", "Амстердам", "26 ms", true)
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        drawerLayout = findViewById(R.id.drawerLayout)
         vpnButton = findViewById(R.id.vpnButton)
         statusText = findViewById(R.id.statusText)
         serverText = findViewById(R.id.serverText)
+        cityText = findViewById(R.id.cityText)
         pingText = findViewById(R.id.pingText)
         signalBars = findViewById(R.id.signalBars)
         homeFlag = findViewById(R.id.homeFlag)
-        val serverRow = findViewById<android.widget.LinearLayout>(R.id.serverRow)
-        val shape = android.graphics.drawable.GradientDrawable()
-        shape.setColor(0xFF161616.toInt())
-        shape.cornerRadius = 18f * resources.displayMetrics.density
-        serverRow.background = shape
-        serverRow.setOnClickListener {
-            startActivityForResult(Intent(this, ServerListActivity::class.java), 42)
+        locationsBox = findViewById(R.id.locationsBox)
+        pages = listOf(
+            findViewById(R.id.homePage),
+            findViewById(R.id.proPage),
+            findViewById(R.id.locationsPage),
+            findViewById(R.id.settingsPage),
+            findViewById(R.id.accountPage)
+        )
+        icons = listOf(
+            findViewById(R.id.iconHome),
+            findViewById(R.id.iconPro),
+            findViewById(R.id.iconLocations),
+            findViewById(R.id.iconSettings),
+            findViewById(R.id.iconAccount)
+        )
+        labels = listOf(
+            findViewById(R.id.labelHome),
+            findViewById(R.id.labelPro),
+            findViewById(R.id.labelLocations),
+            findViewById(R.id.labelSettings),
+            findViewById(R.id.labelAccount)
+        )
+        bubbles = listOf(
+            findViewById(R.id.bubbleHome),
+            findViewById(R.id.bubblePro),
+            findViewById(R.id.bubbleLocations),
+            findViewById(R.id.bubbleSettings),
+            findViewById(R.id.bubbleAccount)
+        )
+
+        val density = resources.displayMetrics.density
+        val serverRow = findViewById<LinearLayout>(R.id.serverRow)
+        serverRow.background = round(0xFF161616.toInt(), 18f * density)
+        serverRow.setOnClickListener { showPage(2) }
+        findViewById<LinearLayout>(R.id.bottomBar).background = round(0xFF141414.toInt(), 28f * density)
+
+        val proButton = findViewById<TextView>(R.id.proButton)
+        proButton.background = round(0xFFB388FF.toInt(), 16f * density)
+        proButton.setOnClickListener {
+            openInfo("Pro", "Оплату подключим позже. Сейчас это только экран подписки.")
         }
+        val loginButton = findViewById<TextView>(R.id.loginButton)
+        loginButton.background = round(0xFFB388FF.toInt(), 16f * density)
+        loginButton.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
+        }
+        listOf(R.id.rowStatus, R.id.rowImport, R.id.rowSupport, R.id.rowTelegram).forEach { id ->
+            findViewById<LinearLayout>(id).background = round(0xFF161616.toInt(), 16f * density)
+        }
+        findViewById<View>(R.id.rowStatus).setOnClickListener {
+            startActivity(Intent(this, StatusActivity::class.java))
+        }
+        findViewById<View>(R.id.rowImport).setOnClickListener {
+            startActivity(Intent(this, ImportActivity::class.java))
+        }
+        findViewById<View>(R.id.rowSupport).setOnClickListener {
+            openInfo("Поддержка", "Сюда позже встанет почта и чат.")
+        }
+        findViewById<View>(R.id.rowTelegram).setOnClickListener {
+            openInfo("Наш Telegram", "Ссылку на канал поставим, когда она будет.")
+        }
+        listOf(R.id.tabHome, R.id.tabPro, R.id.tabLocations, R.id.tabSettings, R.id.tabAccount)
+            .forEachIndexed { index, id ->
+                findViewById<View>(id).setOnClickListener { showPage(index) }
+            }
 
         if (!prefs.contains("server")) {
             prefs.edit().putString("server", "GERMANY").putString("ping", "23 ms").apply()
         }
-
         showServer()
         paint()
-
-        findViewById<android.view.View>(R.id.menuButton).setOnClickListener {
-            drawerLayout.openDrawer(GravityCompat.START)
-        }
-
         vpnButton.setOnClickListener { onPower() }
+        showPage(0)
+    }
 
+    private fun round(color: Int, radius: Float): GradientDrawable {
+        val shape = GradientDrawable()
+        shape.setColor(color)
+        shape.cornerRadius = radius
+        return shape
+    }
 
+    private fun showPage(index: Int) {
+        pages.forEachIndexed { i, view ->
+            view.visibility = if (i == index) View.VISIBLE else View.GONE
+        }
+        val purple = 0xFFB388FF.toInt()
+        val gray = 0xFF8E8E8E.toInt()
+        icons.forEachIndexed { i, icon -> icon.accent = i == index }
+        labels.forEachIndexed { i, label ->
+            label.setTextColor(if (i == index) purple else gray)
+        }
+        bubbles.forEachIndexed { i, bubble ->
+            bubble.background = if (i == index) round(0xFF2A2040.toInt(), 100f) else null
+        }
+        if (index == 2) fillLocations()
+    }
 
-        findViewById<android.view.View>(R.id.drawerStatus).setOnClickListener {
-            open(StatusActivity::class.java)
-        }
-        findViewById<android.view.View>(R.id.importKey).setOnClickListener {
-            open(ImportActivity::class.java)
-        }
-        findViewById<android.view.View>(R.id.support).setOnClickListener {
-            openInfo("Поддержка", "Сюда позже встанет почта и чат. Сейчас это пустой экран каркаса.")
-        }
-        findViewById<android.view.View>(R.id.telegram).setOnClickListener {
-            openInfo("Наш Telegram", "Ссылку на канал поставим, когда она будет. Сейчас экран только занимает место в меню.")
-        }
-        findViewById<android.view.View>(R.id.settingsButton).setOnClickListener {
-            open(SettingsActivity::class.java)
+    private fun fillLocations() {
+        locationsBox.removeAllViews()
+        val density = resources.displayMetrics.density
+        fun dp(v: Int) = (v * density).toInt()
+        val selected = prefs.getString("server", "GERMANY")
+        places.forEach { place ->
+            val chosen = place.key == selected
+            val row = LinearLayout(this)
+            row.orientation = LinearLayout.HORIZONTAL
+            row.gravity = Gravity.CENTER_VERTICAL
+            row.setPadding(dp(14), dp(14), dp(14), dp(14))
+            row.background = round(if (chosen) 0xFF1C1428.toInt() else 0xFF161616.toInt(), 16f * density)
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            )
+            params.bottomMargin = dp(10)
+            row.layoutParams = params
+
+            val flag = FlagView(this)
+            flag.code = codeOf(place.key)
+            flag.chosen = chosen
+            val flagParams = LinearLayout.LayoutParams(dp(40), dp(28))
+            flagParams.marginEnd = dp(12)
+            flag.layoutParams = flagParams
+
+            val texts = LinearLayout(this)
+            texts.orientation = LinearLayout.VERTICAL
+            texts.layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            val title = TextView(this)
+            title.text = place.title
+            title.textSize = 16f
+            title.setTextColor(if (chosen) 0xFFB388FF.toInt() else 0xFFFFFFFF.toInt())
+            val city = TextView(this)
+            city.text = place.city
+            city.textSize = 13f
+            city.setTextColor(0xFF8E8E8E.toInt())
+            texts.addView(title)
+            texts.addView(city)
+            row.addView(flag)
+            row.addView(texts)
+
+            if (place.pro) {
+                val badge = TextView(this)
+                badge.text = "Pro"
+                badge.textSize = 12f
+                badge.setTextColor(0xFFB388FF.toInt())
+                badge.setPadding(dp(10), dp(4), dp(10), dp(4))
+                badge.background = round(0xFF2A2040.toInt(), 20f * density)
+                row.addView(badge)
+            } else {
+                val pingView = TextView(this)
+                pingView.text = place.ping
+                pingView.textSize = 14f
+                pingView.setTextColor(0xFF3DDC84.toInt())
+                row.addView(pingView)
+            }
+
+            row.setOnClickListener {
+                if (place.pro) {
+                    showPage(1)
+                } else {
+                    prefs.edit().putString("server", place.key).putString("ping", place.ping).apply()
+                    connectRunnable?.let { handler.removeCallbacks(it) }
+                    state = 0
+                    showServer()
+                    paint()
+                    showPage(0)
+                }
+            }
+            locationsBox.addView(row)
         }
     }
 
-    private fun open(cls: Class<*>) {
-        drawerLayout.closeDrawers()
-        startActivity(Intent(this, cls))
+    private fun codeOf(name: String) = when (name) {
+        "FRANCE" -> "FR"
+        "ENGLAND" -> "GB"
+        "NETHERLANDS" -> "NL"
+        "RUSSIA" -> "RU"
+        else -> "DE"
     }
 
-    private fun openInfo(title: String, body: String) {
-        drawerLayout.closeDrawers()
-        startActivity(Intent(this, InfoActivity::class.java)
-            .putExtra("title", title)
-            .putExtra("body", body))
-    }
+    private fun placeOf(name: String?) = places.firstOrNull { it.key == name } ?: places[0]
 
     private fun showServer() {
-        val name = prefs.getString("server", "GERMANY")
-        val ping = prefs.getString("ping", "23 ms")
-        serverText.text = name
+        val place = placeOf(prefs.getString("server", "GERMANY"))
+        val ping = prefs.getString("ping", place.ping) ?: place.ping
+        serverText.text = place.title
+        cityText.text = place.city
         pingText.text = ping
-        val digits = ping?.filter { it.isDigit() } ?: ""
+        val digits = ping.filter { it.isDigit() }
         val ms = if (digits.isEmpty()) 99 else digits.toInt()
         signalBars.pingMs = ms
         pingText.setTextColor(if (ms <= 80) 0xFF3DDC84.toInt() else 0xFFFF4D4D.toInt())
-        homeFlag.code = when (name) {
-            "FRANCE" -> "FR"
-            "ENGLAND" -> "GB"
-            "NETHERLANDS" -> "NL"
-            "RUSSIA" -> "RU"
-            else -> "DE"
-        }
+        homeFlag.code = codeOf(place.key)
         homeFlag.invalidate()
     }
 
@@ -147,18 +292,12 @@ class MainActivity : AppCompatActivity() {
         prefs.edit().putString("link_state", label).apply()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == 42 && resultCode == RESULT_OK && data != null) {
-            prefs.edit()
-                .putString("server", data.getStringExtra("server"))
-                .putString("ping", data.getStringExtra("ping"))
-                .apply()
-            connectRunnable?.let { handler.removeCallbacks(it) }
-            state = 0
-            showServer()
-            paint()
-        }
+    private fun openInfo(title: String, body: String) {
+        startActivity(
+            Intent(this, InfoActivity::class.java)
+                .putExtra("title", title)
+                .putExtra("body", body)
+        )
     }
 
     override fun onDestroy() {
