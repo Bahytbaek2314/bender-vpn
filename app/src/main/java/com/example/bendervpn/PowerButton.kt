@@ -63,22 +63,37 @@ class PowerButton @JvmOverloads constructor(
             path.lineTo(cx + r * 0.40f, cy - r * 0.28f)
             canvas.drawPath(path, paint)
         } else if (mode == 0) {
-            val headR = r * 0.28f
+            val headR = r * 0.46f
             val headY = cy + r * 0.08f
-            val earR = r * 0.13f
+            val earR = r * 0.20f
+            val earX = headR * 0.70f
             val earY = headY - headR * 0.72f
-            val earX = headR * 0.62f
+            paint.style = Paint.Style.FILL
+            paint.color = 0xFFFFFFFF.toInt()
             canvas.drawCircle(cx - earX, earY, earR, paint)
             canvas.drawCircle(cx + earX, earY, earR, paint)
             canvas.drawCircle(cx, headY, headR, paint)
-            canvas.drawCircle(cx, headY + headR * 0.32f, headR * 0.42f, paint)
-            paint.style = Paint.Style.FILL
-            canvas.drawCircle(cx - earX, earY, earR * 0.42f, paint)
-            canvas.drawCircle(cx + earX, earY, earR * 0.42f, paint)
-            canvas.drawCircle(cx - headR * 0.32f, headY - headR * 0.10f, r * 0.032f, paint)
-            canvas.drawCircle(cx + headR * 0.32f, headY - headR * 0.10f, r * 0.032f, paint)
-            canvas.drawCircle(cx, headY + headR * 0.18f, r * 0.045f, paint)
+            paint.color = 0xFFC9A6FF.toInt()
+            val innerR = earR * 0.46f
+            val innerY = earY + earR * 0.08f
+            canvas.drawCircle(cx - earX, innerY, innerR, paint)
+            canvas.drawCircle(cx + earX, innerY, innerR, paint)
+            paint.color = 0xFFF3ECFF.toInt()
+            val mw = headR * 0.46f
+            val mh = headR * 0.32f
+            val my = headY + headR * 0.34f
+            canvas.drawOval(cx - mw, my - mh * 0.75f, cx + mw, my + mh * 0.85f, paint)
+            paint.color = 0xFF1C1024.toInt()
+            val eyeY = headY - headR * 0.06f
+            val eyeR = r * 0.045f
+            canvas.drawCircle(cx - headR * 0.36f, eyeY, eyeR, paint)
+            canvas.drawCircle(cx + headR * 0.36f, eyeY, eyeR, paint)
+            canvas.drawOval(cx - r * 0.085f, my - r * 0.09f, cx + r * 0.085f, my + r * 0.02f, paint)
+            paint.color = 0xFFFFFFFF.toInt()
+            canvas.drawCircle(cx - headR * 0.36f - eyeR * 0.28f, eyeY - eyeR * 0.30f, eyeR * 0.22f, paint)
+            canvas.drawCircle(cx + headR * 0.36f - eyeR * 0.28f, eyeY - eyeR * 0.30f, eyeR * 0.22f, paint)
             paint.style = Paint.Style.STROKE
+            paint.strokeWidth = stroke
         }
     }
 
