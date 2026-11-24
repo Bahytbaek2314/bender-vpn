@@ -42,6 +42,7 @@ class PowerButton @JvmOverloads constructor(
         val cy = height / 2f
         val r = min(width, height) * 0.36f
         val stroke = r * 0.075f
+        paint.style = Paint.Style.STROKE
         paint.strokeWidth = stroke
         paint.color = 0xFFB388FF.toInt()
         if (mode == 1) {
@@ -62,9 +63,22 @@ class PowerButton @JvmOverloads constructor(
             path.lineTo(cx + r * 0.40f, cy - r * 0.28f)
             canvas.drawPath(path, paint)
         } else if (mode == 0) {
-            val ir = r * 0.42f
-            canvas.drawArc(cx - ir, cy - ir, cx + ir, cy + ir, 140f, 260f, false, paint)
-            canvas.drawLine(cx, cy - r * 0.52f, cx, cy - r * 0.02f, paint)
+            val headR = r * 0.28f
+            val headY = cy + r * 0.08f
+            val earR = r * 0.13f
+            val earY = headY - headR * 0.72f
+            val earX = headR * 0.62f
+            canvas.drawCircle(cx - earX, earY, earR, paint)
+            canvas.drawCircle(cx + earX, earY, earR, paint)
+            canvas.drawCircle(cx, headY, headR, paint)
+            canvas.drawCircle(cx, headY + headR * 0.32f, headR * 0.42f, paint)
+            paint.style = Paint.Style.FILL
+            canvas.drawCircle(cx - earX, earY, earR * 0.42f, paint)
+            canvas.drawCircle(cx + earX, earY, earR * 0.42f, paint)
+            canvas.drawCircle(cx - headR * 0.32f, headY - headR * 0.10f, r * 0.032f, paint)
+            canvas.drawCircle(cx + headR * 0.32f, headY - headR * 0.10f, r * 0.032f, paint)
+            canvas.drawCircle(cx, headY + headR * 0.18f, r * 0.045f, paint)
+            paint.style = Paint.Style.STROKE
         }
     }
 
