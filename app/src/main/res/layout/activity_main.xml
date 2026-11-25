@@ -145,7 +145,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Аккаунт для Pro-серверов"
+                        android:text="Ключ из Telegram-бота"
                         android:textColor="#FFFFFF"
                         android:textSize="16sp"
                         android:paddingTop="14dp"
@@ -225,37 +225,6 @@
                 </LinearLayout>
             </ScrollView>
 
-            <LinearLayout
-                android:id="@+id/accountPage"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:visibility="gone"
-                android:padding="24dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Аккаунт"
-                    android:textColor="#FFFFFF"
-                    android:textSize="32sp"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="24dp"
-                    android:text="Бесплатные серверы работают без входа. Для Pro нужен аккаунт."
-                    android:textColor="#AAAAAA"
-                    android:textSize="15sp"/>
-                <TextView
-                    android:id="@+id/loginButton"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:gravity="center"
-                    android:text="Войти"
-                    android:textColor="#FFFFFF"
-                    android:textSize="16sp"/>
-            </LinearLayout>
         </FrameLayout>
 
         <LinearLayout
@@ -293,12 +262,6 @@
                     <com.example.bendervpn.LineIcon android:id="@+id/iconSettings" android:layout_width="match_parent" android:layout_height="match_parent" android:tag="gear"/>
                 </FrameLayout>
                 <TextView android:id="@+id/labelSettings" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Настройки" android:textColor="#8E8E8E" android:textSize="10sp"/>
-            </LinearLayout>
-            <LinearLayout android:id="@+id/tabAccount" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
-                <FrameLayout android:id="@+id/bubbleAccount" android:layout_width="34dp" android:layout_height="34dp">
-                    <com.example.bendervpn.LineIcon android:id="@+id/iconAccount" android:layout_width="match_parent" android:layout_height="match_parent" android:tag="user"/>
-                </FrameLayout>
-                <TextView android:id="@+id/labelAccount" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Аккаунт" android:textColor="#8E8E8E" android:textSize="10sp"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

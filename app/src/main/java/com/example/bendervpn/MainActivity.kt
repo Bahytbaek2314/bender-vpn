@@ -62,29 +62,25 @@ class MainActivity : AppCompatActivity() {
             findViewById(R.id.homePage),
             findViewById(R.id.proPage),
             findViewById(R.id.locationsPage),
-            findViewById(R.id.settingsPage),
-            findViewById(R.id.accountPage)
+            findViewById(R.id.settingsPage)
         )
         icons = listOf(
             findViewById(R.id.iconHome),
             findViewById(R.id.iconPro),
             findViewById(R.id.iconLocations),
-            findViewById(R.id.iconSettings),
-            findViewById(R.id.iconAccount)
+            findViewById(R.id.iconSettings)
         )
         labels = listOf(
             findViewById(R.id.labelHome),
             findViewById(R.id.labelPro),
             findViewById(R.id.labelLocations),
-            findViewById(R.id.labelSettings),
-            findViewById(R.id.labelAccount)
+            findViewById(R.id.labelSettings)
         )
         bubbles = listOf(
             findViewById(R.id.bubbleHome),
             findViewById(R.id.bubblePro),
             findViewById(R.id.bubbleLocations),
-            findViewById(R.id.bubbleSettings),
-            findViewById(R.id.bubbleAccount)
+            findViewById(R.id.bubbleSettings)
         )
 
         val density = resources.displayMetrics.density
@@ -97,11 +93,6 @@ class MainActivity : AppCompatActivity() {
         proButton.background = round(0xFFB388FF.toInt(), 16f * density)
         proButton.setOnClickListener {
             openInfo("Pro", "Оплату подключим позже. Сейчас это только экран подписки.")
-        }
-        val loginButton = findViewById<TextView>(R.id.loginButton)
-        loginButton.background = round(0xFFB388FF.toInt(), 16f * density)
-        loginButton.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java))
         }
         listOf(R.id.rowStatus, R.id.rowImport, R.id.rowSupport, R.id.rowTelegram).forEach { id ->
             findViewById<LinearLayout>(id).background = round(0xFF161616.toInt(), 16f * density)
@@ -118,7 +109,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<View>(R.id.rowTelegram).setOnClickListener {
             openInfo("Наш Telegram", "Ссылку на канал поставим, когда она будет.")
         }
-        listOf(R.id.tabHome, R.id.tabPro, R.id.tabLocations, R.id.tabSettings, R.id.tabAccount)
+        listOf(R.id.tabHome, R.id.tabPro, R.id.tabLocations, R.id.tabSettings)
             .forEachIndexed { index, id ->
                 findViewById<View>(id).setOnClickListener { showPage(index) }
             }
