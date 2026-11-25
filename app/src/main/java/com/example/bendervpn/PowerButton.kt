@@ -92,14 +92,17 @@ class PowerButton @JvmOverloads constructor(
             paint.color = 0xFFFFFFFF.toInt()
             canvas.drawCircle(cx - headR * 0.36f - eyeR * 0.28f, eyeY - eyeR * 0.30f, eyeR * 0.22f, paint)
             canvas.drawCircle(cx + headR * 0.36f - eyeR * 0.28f, eyeY - eyeR * 0.30f, eyeR * 0.22f, paint)
-            val lensW = r * 0.20f
-            val lensH = r * 0.15f
-            val leftX = cx - headR * 0.36f
-            val rightX = cx + headR * 0.36f
-            val frame = stroke * 0.28f
-            val rad = lensH * 0.45f
+            val lensW = r * 0.155f
+            val lensH = r * 0.118f
+            val gap = r * 0.055f
+            val leftX = cx - gap / 2f - lensW
+            val rightX = cx + gap / 2f + lensW
+            val frame = stroke * 0.22f
+            val rad = lensH * 0.42f
+            val bridge = lensH * 0.42f
             paint.style = Paint.Style.FILL
             paint.color = 0xFF1C1024.toInt()
+            canvas.drawRect(leftX + lensW, eyeY - bridge, rightX - lensW, eyeY + bridge, paint)
             canvas.drawRoundRect(leftX - lensW, eyeY - lensH, leftX + lensW, eyeY + lensH, rad, rad, paint)
             canvas.drawRoundRect(rightX - lensW, eyeY - lensH, rightX + lensW, eyeY + lensH, rad, rad, paint)
             paint.style = Paint.Style.STROKE
@@ -107,13 +110,14 @@ class PowerButton @JvmOverloads constructor(
             paint.strokeWidth = frame
             canvas.drawRoundRect(leftX - lensW, eyeY - lensH, leftX + lensW, eyeY + lensH, rad, rad, paint)
             canvas.drawRoundRect(rightX - lensW, eyeY - lensH, rightX + lensW, eyeY + lensH, rad, rad, paint)
-            canvas.drawLine(leftX + lensW, eyeY, rightX - lensW, eyeY, paint)
-            canvas.drawLine(leftX - lensW, eyeY - lensH * 0.2f, leftX - lensW - r * 0.07f, eyeY - lensH * 0.85f, paint)
-            canvas.drawLine(rightX + lensW, eyeY - lensH * 0.2f, rightX + lensW + r * 0.07f, eyeY - lensH * 0.85f, paint)
+            canvas.drawLine(leftX + lensW, eyeY - bridge, rightX - lensW, eyeY - bridge, paint)
+            canvas.drawLine(leftX + lensW, eyeY + bridge, rightX - lensW, eyeY + bridge, paint)
+            canvas.drawLine(leftX - lensW, eyeY - lensH * 0.15f, leftX - lensW - r * 0.055f, eyeY - lensH * 0.70f, paint)
+            canvas.drawLine(rightX + lensW, eyeY - lensH * 0.15f, rightX + lensW + r * 0.055f, eyeY - lensH * 0.70f, paint)
             paint.color = 0xFFFFFFFF.toInt()
-            paint.strokeWidth = frame * 0.7f
-            canvas.drawLine(leftX - lensW * 0.45f, eyeY - lensH * 0.35f, leftX - lensW * 0.05f, eyeY - lensH * 0.72f, paint)
-            canvas.drawLine(rightX - lensW * 0.45f, eyeY - lensH * 0.35f, rightX - lensW * 0.05f, eyeY - lensH * 0.72f, paint)
+            paint.strokeWidth = frame * 0.65f
+            canvas.drawLine(leftX - lensW * 0.42f, eyeY - lensH * 0.22f, leftX - lensW * 0.12f, eyeY - lensH * 0.55f, paint)
+            canvas.drawLine(rightX - lensW * 0.42f, eyeY - lensH * 0.22f, rightX - lensW * 0.12f, eyeY - lensH * 0.55f, paint)
             paint.strokeWidth = stroke
         }
     }
