@@ -24,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var homeFlag: FlagView
     private lateinit var locationsBox: LinearLayout
     private lateinit var proBadge: TextView
+    private lateinit var homePro: TextView
     private lateinit var proState: TextView
     private lateinit var proKeyInput: EditText
     private lateinit var saveProKey: TextView
@@ -67,6 +68,7 @@ class MainActivity : AppCompatActivity() {
         homeFlag = findViewById(R.id.homeFlag)
         locationsBox = findViewById(R.id.locationsBox)
         proBadge = findViewById(R.id.proBadge)
+        homePro = findViewById(R.id.homePro)
         proState = findViewById(R.id.proState)
         proKeyInput = findViewById(R.id.proKeyInput)
         saveProKey = findViewById(R.id.saveProKey)
@@ -106,6 +108,7 @@ class MainActivity : AppCompatActivity() {
         proKeyInput.background = round(0xFF161616.toInt(), 16f * density, 0xFF3A3050.toInt())
         saveProKey.background = round(0xFFB388FF.toInt(), 16f * density)
         proBadge.background = round(0xFF2A2040.toInt(), 100f * density)
+        homePro.background = round(0xFF2A2040.toInt(), 20f * density)
         saveProKey.setOnClickListener { saveKey() }
         clearProKey.setOnClickListener { clearKey() }
         listOf(R.id.rowStatus, R.id.rowImport, R.id.rowSupport, R.id.rowTelegram).forEach { id ->
@@ -317,6 +320,7 @@ class MainActivity : AppCompatActivity() {
         pingText.setTextColor(if (ms <= 80) 0xFF3DDC84.toInt() else 0xFFFF4D4D.toInt())
         homeFlag.code = codeOf(place.key)
         homeFlag.invalidate()
+        homePro.visibility = if (place.pro) View.VISIBLE else View.GONE
     }
 
     private fun onPower() {
