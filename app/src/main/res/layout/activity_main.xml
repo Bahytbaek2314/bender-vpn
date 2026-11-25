@@ -33,7 +33,21 @@
                     android:text="Отключено"
                     android:textColor="#AAAAAA"
                     android:textSize="16sp"
-                    android:layout_marginBottom="28dp"/>
+                    android:layout_marginBottom="12dp"/>
+
+                <TextView
+                    android:id="@+id/proBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="18dp"
+                    android:paddingLeft="14dp"
+                    android:paddingRight="14dp"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:text="Pro активен"
+                    android:textColor="#B388FF"
+                    android:textSize="13sp"
+                    android:visibility="gone"/>
 
                 <com.example.bendervpn.PowerButton
                     android:id="@+id/vpnButton"
@@ -94,7 +108,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:text=">"
+                        android:text="›"
                         android:textColor="#888888"
                         android:textSize="18sp"/>
                 </LinearLayout>
@@ -119,46 +133,73 @@
                         android:textSize="32sp"
                         android:textStyle="bold"/>
                     <TextView
+                        android:id="@+id/proState"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:layout_marginBottom="22dp"
-                        android:text="Бесплатные серверы уже работают. Pro откроет остальные."
+                        android:text="Оплати в боте и вставь ключ сюда."
                         android:textColor="#AAAAAA"
                         android:textSize="15sp"/>
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/proCard"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Англия и Нидерланды"
-                        android:textColor="#FFFFFF"
-                        android:textSize="16sp"
-                        android:paddingTop="14dp"
-                        android:paddingBottom="14dp"/>
-                    <TextView
+                        android:layout_marginTop="18dp"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="1   Оплати подписку в Telegram-боте"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="2   Скопируй ключ из бота"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:text="3   Вставь ключ ниже"
+                            android:textColor="#FFFFFF"
+                            android:textSize="15sp"/>
+                    </LinearLayout>
+                    <EditText
+                        android:id="@+id/proKeyInput"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Без ограничения по времени"
+                        android:layout_height="120dp"
+                        android:layout_marginTop="14dp"
+                        android:background="#161616"
+                        android:gravity="top"
+                        android:hint="Вставь ключ из бота"
+                        android:inputType="textMultiLine"
+                        android:padding="14dp"
                         android:textColor="#FFFFFF"
-                        android:textSize="16sp"
-                        android:paddingTop="14dp"
-                        android:paddingBottom="14dp"/>
+                        android:textColorHint="#777777"
+                        android:textSize="15sp"/>
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Ключ из Telegram-бота"
-                        android:textColor="#FFFFFF"
-                        android:textSize="16sp"
-                        android:paddingTop="14dp"
-                        android:paddingBottom="14dp"/>
-                    <TextView
-                        android:id="@+id/proButton"
+                        android:id="@+id/saveProKey"
                         android:layout_width="match_parent"
                         android:layout_height="52dp"
-                        android:layout_marginTop="28dp"
+                        android:layout_marginTop="14dp"
                         android:gravity="center"
-                        android:text="Оплата позже"
+                        android:text="Активировать Pro"
                         android:textColor="#FFFFFF"
                         android:textSize="16sp"/>
+                    <TextView
+                        android:id="@+id/clearProKey"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center"
+                        android:text="Удалить ключ"
+                        android:textColor="#8E8E8E"
+                        android:textSize="14sp"
+                        android:visibility="gone"/>
                 </LinearLayout>
             </ScrollView>
 
@@ -210,17 +251,22 @@
                         android:textSize="32sp"
                         android:textStyle="bold"
                         android:layout_marginBottom="16dp"/>
-                    <LinearLayout android:id="@+id/rowStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="16dp" android:layout_marginBottom="10dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Статус" android:textColor="#FFFFFF" android:textSize="16sp"/>
-                    </LinearLayout>
-                    <LinearLayout android:id="@+id/rowImport" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="16dp" android:layout_marginBottom="10dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Импорт ключа" android:textColor="#FFFFFF" android:textSize="16sp"/>
-                    </LinearLayout>
-                    <LinearLayout android:id="@+id/rowSupport" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="16dp" android:layout_marginBottom="10dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Поддержка" android:textColor="#FFFFFF" android:textSize="16sp"/>
-                    </LinearLayout>
-                    <LinearLayout android:id="@+id/rowTelegram" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="16dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Наш Telegram" android:textColor="#FFFFFF" android:textSize="16sp"/>
+                    <LinearLayout android:id="@+id/rowStatus" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="14dp" android:layout_marginBottom="10dp">
+                        <com.example.bendervpn.LineIcon android:layout_width="22dp" android:layout_height="22dp" android:tag="status"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginLeft="14dp" android:text="Статус" android:textColor="#FFFFFF" android:textSize="16sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textColor="#666666" android:textSize="22sp"/>
+                    </LinearLayout>\n                    <LinearLayout android:id="@+id/rowImport" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="14dp" android:layout_marginBottom="10dp">
+                        <com.example.bendervpn.LineIcon android:layout_width="22dp" android:layout_height="22dp" android:tag="key"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginLeft="14dp" android:text="Импорт ключа" android:textColor="#FFFFFF" android:textSize="16sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textColor="#666666" android:textSize="22sp"/>
+                    </LinearLayout>\n                    <LinearLayout android:id="@+id/rowSupport" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="14dp" android:layout_marginBottom="10dp">
+                        <com.example.bendervpn.LineIcon android:layout_width="22dp" android:layout_height="22dp" android:tag="chat"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginLeft="14dp" android:text="Поддержка" android:textColor="#FFFFFF" android:textSize="16sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textColor="#666666" android:textSize="22sp"/>
+                    </LinearLayout>\n                    <LinearLayout android:id="@+id/rowTelegram" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="14dp">
+                        <com.example.bendervpn.LineIcon android:layout_width="22dp" android:layout_height="22dp" android:tag="plane"/>
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginLeft="14dp" android:text="Наш Telegram" android:textColor="#FFFFFF" android:textSize="16sp"/>
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textColor="#666666" android:textSize="22sp"/>
                     </LinearLayout>
                 </LinearLayout>
             </ScrollView>

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0A0A0A"
+    android:background="#050505"
     android:orientation="vertical">
 
     <LinearLayout
@@ -11,7 +11,7 @@
         android:gravity="center_vertical"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:background="#111111">
+        android:background="#161616">
 
         <TextView
             android:id="@+id/backButton"
@@ -46,7 +46,7 @@
         android:hint="Вставь ключ сервера"
         android:textColor="#FFFFFF"
         android:textColorHint="#777777"
-        android:background="#111111"
+        android:background="#161616"
         android:padding="16dp"
         android:layout_margin="16dp"
         android:inputType="textMultiLine"/>
@@ -58,7 +58,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="24dp"
-        android:text="Сохранить"
+        android:text="Активировать Pro"
         android:textColor="#FFFFFF"
-        android:backgroundTint="#FF6B00"/>
+        android:backgroundTint="#B388FF"/>
 </LinearLayout>

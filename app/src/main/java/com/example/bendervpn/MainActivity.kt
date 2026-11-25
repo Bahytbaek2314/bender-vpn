@@ -21,6 +21,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var signalBars: SignalBars
     private lateinit var homeFlag: FlagView
     private lateinit var locationsBox: LinearLayout
+    private lateinit var proBadge: TextView
+    private lateinit var proState: TextView
+    private lateinit var proKeyInput: EditText
+    private lateinit var saveProKey: TextView
+    private lateinit var clearProKey: TextView
     private lateinit var pages: List<View>
     private lateinit var icons: List<LineIcon>
     private lateinit var labels: List<TextView>
@@ -58,6 +63,11 @@ class MainActivity : AppCompatActivity() {
         signalBars = findViewById(R.id.signalBars)
         homeFlag = findViewById(R.id.homeFlag)
         locationsBox = findViewById(R.id.locationsBox)
+        proBadge = findViewById(R.id.proBadge)
+        proState = findViewById(R.id.proState)
+        proKeyInput = findViewById(R.id.proKeyInput)
+        saveProKey = findViewById(R.id.saveProKey)
+        clearProKey = findViewById(R.id.clearProKey)
         pages = listOf(
             findViewById(R.id.homePage),
             findViewById(R.id.proPage),
@@ -85,15 +95,16 @@ class MainActivity : AppCompatActivity() {
 
         val density = resources.displayMetrics.density
         val serverRow = findViewById<LinearLayout>(R.id.serverRow)
-        serverRow.background = round(0xFF161616.toInt(), 18f * density)
+        serverRow.background = round(0xFF161616.toInt(), 22f * density, 0xFF3A3050.toInt())
         serverRow.setOnClickListener { showPage(2) }
         findViewById<LinearLayout>(R.id.bottomBar).background = round(0xFF141414.toInt(), 28f * density)
 
-        val proButton = findViewById<TextView>(R.id.proButton)
-        proButton.background = round(0xFFB388FF.toInt(), 16f * density)
-        proButton.setOnClickListener {
-            openInfo("Pro", "Оплату подключим позже. Сейчас это только экран подписки.")
-        }
+        findViewById<LinearLayout>(R.id.proCard).background = round(0xFF161616.toInt(), 18f * density)
+        proKeyInput.background = round(0xFF161616.toInt(), 16f * density, 0xFF3A3050.toInt())
+        saveProKey.background = round(0xFFB388FF.toInt(), 16f * density)
+        proBadge.background = round(0xFF2A2040.toInt(), 100f * density)
+        saveProKey.setOnClickListener { saveKey() }
+        clearProKey.setOnClickListener { clearKey() }
         listOf(R.id.rowStatus, R.id.rowImport, R.id.rowSupport, R.id.rowTelegram).forEach { id ->
             findViewById<LinearLayout>(id).background = round(0xFF161616.toInt(), 16f * density)
         }
@@ -118,16 +129,69 @@ class MainActivity : AppCompatActivity() {
             prefs.edit().putString("server", "GERMANY").putString("ping", "23 ms").apply()
         }
         showServer()
+        refreshPro()
         paint()
         vpnButton.setOnClickListener { onPower() }
         showPage(0)
     }
 
-    private fun round(color: Int, radius: Float): GradientDrawable {
+    override fun onResume() {
+        super.onResume()
+        showServer()
+        refreshPro()
+    }
+
+    private fun round(color: Int, radius: Float, stroke: Int = 0): GradientDrawable {
         val shape = GradientDrawable()
         shape.setColor(color)
         shape.cornerRadius = radius
+        if (stroke != 0) {
+            val width = (resources.displayMetrics.density * 1.2f).toInt().coerceAtLeast(1)
+            shape.setStroke(width, stroke)
+        }
         return shape
+    }
+
+    private fun hasPro() = !prefs.getString("wg_key", "").isNullOrBlank()
+
+    private fun refreshPro() {
+        val on = hasPro()
+        proBadge.visibility = if (on) View.VISIBLE else View.GONE
+        proState.text = if (on) {
+            "Pro активен. Англия и Нидерланды открыты."
+        } else {
+            "Оплати в боте и вставь ключ сюда."
+        }
+        clearProKey.visibility = if (on) View.VISIBLE else View.GONE
+        val saved = prefs.getString("wg_key", "") ?: ""
+        if (proKeyInput.text.toString() != saved) proKeyInput.setText(saved)
+    }
+
+    private fun saveKey() {
+        val key = proKeyInput.text.toString().trim()
+        if (key.isEmpty()) {
+            Toast.makeText(this, "Вставь ключ", Toast.LENGTH_SHORT).show()
+            return
+        }
+        prefs.edit().putString("wg_key", key).apply()
+        Toast.makeText(this, "Pro включён", Toast.LENGTH_SHORT).show()
+        refreshPro()
+    }
+
+    private fun clearKey() {
+        val current = placeOf(prefs.getString("server", "GERMANY"))
+        val edit = prefs.edit().remove("wg_key")
+        if (current.pro) {
+            edit.putString("server", "GERMANY").putString("ping", "23 ms")
+            connectRunnable?.let { handler.removeCallbacks(it) }
+            state = 0
+            paint()
+        }
+        edit.apply()
+        proKeyInput.setText("")
+        showServer()
+        refreshPro()
+        Toast.makeText(this, "Ключ удалён", Toast.LENGTH_SHORT).show()
     }
 
     private fun showPage(index: Int) {
@@ -188,6 +252,7 @@ class MainActivity : AppCompatActivity() {
             row.addView(flag)
             row.addView(texts)
 
+            val unlocked = !place.pro || hasPro()
             if (place.pro) {
                 val badge = TextView(this)
                 badge.text = "Pro"
@@ -195,8 +260,15 @@ class MainActivity : AppCompatActivity() {
                 badge.setTextColor(0xFFB388FF.toInt())
                 badge.setPadding(dp(10), dp(4), dp(10), dp(4))
                 badge.background = round(0xFF2A2040.toInt(), 20f * density)
+                val badgeParams = LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+                )
+                badgeParams.marginEnd = dp(10)
+                badge.layoutParams = badgeParams
                 row.addView(badge)
-            } else {
+            }
+            if (unlocked) {
                 val pingView = TextView(this)
                 pingView.text = place.ping
                 pingView.textSize = 14f
@@ -205,7 +277,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             row.setOnClickListener {
-                if (place.pro) {
+                if (!unlocked) {
                     showPage(1)
                 } else {
                     prefs.edit().putString("server", place.key).putString("ping", place.ping).apply()

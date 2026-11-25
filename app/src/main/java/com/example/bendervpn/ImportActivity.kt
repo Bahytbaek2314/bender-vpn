@@ -23,7 +23,7 @@ class ImportActivity : AppCompatActivity() {
                 Toast.makeText(this, "Вставь ключ", Toast.LENGTH_SHORT).show()
             } else {
                 prefs.edit().putString("wg_key", key).apply()
-                Toast.makeText(this, "Ключ сохранён", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Pro включён", Toast.LENGTH_SHORT).show()
                 finish()
             }
         }
