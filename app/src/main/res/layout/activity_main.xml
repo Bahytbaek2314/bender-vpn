@@ -255,15 +255,18 @@
                         <com.example.bendervpn.LineIcon android:layout_width="22dp" android:layout_height="22dp" android:tag="status"/>
                         <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginLeft="14dp" android:text="Статус" android:textColor="#FFFFFF" android:textSize="16sp"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textColor="#666666" android:textSize="22sp"/>
-                    </LinearLayout>\n                    <LinearLayout android:id="@+id/rowImport" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="14dp" android:layout_marginBottom="10dp">
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/rowImport" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="14dp" android:layout_marginBottom="10dp">
                         <com.example.bendervpn.LineIcon android:layout_width="22dp" android:layout_height="22dp" android:tag="key"/>
                         <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginLeft="14dp" android:text="Импорт ключа" android:textColor="#FFFFFF" android:textSize="16sp"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textColor="#666666" android:textSize="22sp"/>
-                    </LinearLayout>\n                    <LinearLayout android:id="@+id/rowSupport" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="14dp" android:layout_marginBottom="10dp">
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/rowSupport" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="14dp" android:layout_marginBottom="10dp">
                         <com.example.bendervpn.LineIcon android:layout_width="22dp" android:layout_height="22dp" android:tag="chat"/>
                         <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginLeft="14dp" android:text="Поддержка" android:textColor="#FFFFFF" android:textSize="16sp"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textColor="#666666" android:textSize="22sp"/>
-                    </LinearLayout>\n                    <LinearLayout android:id="@+id/rowTelegram" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="14dp">
+                    </LinearLayout>
+                    <LinearLayout android:id="@+id/rowTelegram" android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:padding="14dp">
                         <com.example.bendervpn.LineIcon android:layout_width="22dp" android:layout_height="22dp" android:tag="plane"/>
                         <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginLeft="14dp" android:text="Наш Telegram" android:textColor="#FFFFFF" android:textSize="16sp"/>
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textColor="#666666" android:textSize="22sp"/>
