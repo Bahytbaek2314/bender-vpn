@@ -1,64 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#050505"
-    android:orientation="vertical">
+    android:background="#050505">
+
+    <com.example.bendervpn.GlowBackground
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:gravity="center_vertical"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:background="#161616">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp">
+
+            <TextView
+                android:id="@+id/backButton"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:gravity="center"
+                android:text="‹"
+                android:textColor="#FFFFFF"
+                android:textSize="28sp"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="Импорт ключа"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="48dp"
+                android:layout_height="48dp"/>
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/backButton"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:gravity="center"
-            android:text="←"
-            android:textColor="#FFFFFF"
-            android:textSize="22sp"/>
-
-        <TextView
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Импорт ключа"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="8dp"
+            android:text="Вставь ключ, который прислал бот после оплаты."
+            android:textColor="#AAAAAA"
+            android:textSize="14sp"/>
+
+        <EditText
+            android:id="@+id/keyInput"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:layout_margin="20dp"
+            android:background="#161616"
+            android:gravity="top"
+            android:hint="Ключ"
+            android:inputType="textMultiLine"
+            android:padding="16dp"
             android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:textColorHint="#777777"
+            android:textSize="15sp"/>
 
-        <View
-            android:layout_width="48dp"
-            android:layout_height="48dp"/>
+        <TextView
+            android:id="@+id/saveKey"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:gravity="center"
+            android:text="Активировать Pro"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"/>
     </LinearLayout>
-
-    <EditText
-        android:id="@+id/keyInput"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:gravity="top"
-        android:hint="Вставь ключ сервера"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#777777"
-        android:background="#161616"
-        android:padding="16dp"
-        android:layout_margin="16dp"
-        android:inputType="textMultiLine"/>
-
-    <Button
-        android:id="@+id/saveKey"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="24dp"
-        android:text="Активировать Pro"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#B388FF"/>
-</LinearLayout>
+</FrameLayout>

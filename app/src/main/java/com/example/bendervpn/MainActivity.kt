@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var icons: List<LineIcon>
     private lateinit var labels: List<TextView>
     private lateinit var bubbles: List<View>
+    private lateinit var serverRow: LinearLayout
 
     private val handler = Handler(Looper.getMainLooper())
     private var connectRunnable: Runnable? = null
@@ -96,7 +97,7 @@ class MainActivity : AppCompatActivity() {
         )
 
         val density = resources.displayMetrics.density
-        val serverRow = findViewById<LinearLayout>(R.id.serverRow)
+        serverRow = findViewById(R.id.serverRow)
         serverRow.background = round(0xFF161616.toInt(), 22f * density, 0xFF3A3050.toInt())
         serverRow.setOnClickListener { showPage(2) }
         findViewById<LinearLayout>(R.id.bottomBar).background = round(0xFF141414.toInt(), 28f * density)
@@ -354,6 +355,12 @@ class MainActivity : AppCompatActivity() {
         }
         statusText.text = label
         statusText.setTextColor(color)
+        val density = resources.displayMetrics.density
+        if (state == 2) {
+            serverRow.background = round(0xFF1C1428.toInt(), 22f * density, 0xFFB388FF.toInt())
+        } else {
+            serverRow.background = round(0xFF161616.toInt(), 22f * density, 0xFF3A3050.toInt())
+        }
         prefs.edit().putString("link_state", label).apply()
     }
 
