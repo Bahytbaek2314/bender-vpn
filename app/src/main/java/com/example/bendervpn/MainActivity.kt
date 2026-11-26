@@ -326,6 +326,7 @@ class MainActivity : AppCompatActivity() {
     private fun onPower() {
         if (state == 0) {
             state = 1
+            magga(true)
             paint()
             val task = Runnable {
                 if (state != 1) return@Runnable
@@ -336,6 +337,7 @@ class MainActivity : AppCompatActivity() {
             handler.postDelayed(task, 1600)
         } else {
             connectRunnable?.let { handler.removeCallbacks(it) }
+            magga(false)
             state = 0
             paint()
         }
