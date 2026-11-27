@@ -1,7 +1,14 @@
 package com.example.bendervpn
 
+import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.drawable.GradientDrawable
+import android.net.ConnectivityManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,7 +18,9 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NotificationCompat
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,23 +47,64 @@ class MainActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private var connectRunnable: Runnable? = null
     private var state = 0
+    private var connectedAt = 0L
     private val prefs by lazy { getSharedPreferences("vpn", MODE_PRIVATE) }
+    private val locationPings = mutableListOf<Pair<Int, TextView>>()
 
     private data class Place(
         val key: String,
         val title: String,
         val city: String,
-        val ping: String,
+        val ping: Int,
         val pro: Boolean
     )
 
     private val places = listOf(
-        Place("GERMANY", "Германия", "Франкфурт", "23 ms", false),
-        Place("FRANCE", "Франция", "Париж", "29 ms", false),
-        Place("RUSSIA", "Россия", "Москва", "19 ms", false),
-        Place("ENGLAND", "Англия", "Лондон", "41 ms", true),
-        Place("NETHERLANDS", "Нидерланды", "Амстердам", "26 ms", true)
+        Place("GERMANY", "Германия", "Франкфурт", 23, false),
+        Place("FRANCE", "Франция", "Париж", 29, false),
+        Place("RUSSIA", "Россия", "Москва", 19, false),
+        Place("ENGLAND", "Англия", "Лондон", 41, true),
+        Place("NETHERLANDS", "Нидерланды", "Амстердам", 26, true)
     )
+
+    private val tick = object : Runnable {
+        override fun run() {
+            if (prefs.getBoolean("want_disconnect", false)) {
+                prefs.edit().putBoolean("want_disconnect", false).apply()
+                disconnect()
+            }
+            val place = placeOf(prefs.getString("server", "GERMANY"))
+            if (!online()) {
+                pingText.text = "нет сети"
+                pingText.setTextColor(0xFFFF4D4D.toInt())
+                signalBars.pingMs = 999
+                if (state == 1) {
+                    connectRunnable?.let { handler.removeCallbacks(it) }
+                    state = 0
+                    Toast.makeText(this@MainActivity, "Сервер не отвечает", Toast.LENGTH_SHORT).show()
+                    paint()
+                }
+            } else {
+                val live = livePing(place.ping, 0)
+                pingText.text = "$live ms"
+                pingText.setTextColor(if (live <= 80) 0xFF3DDC84.toInt() else 0xFFFF4D4D.toInt())
+                signalBars.pingMs = live
+                prefs.edit().putString("ping", "$live ms").apply()
+            }
+            locationPings.forEachIndexed { index, pair ->
+                val live = livePing(pair.first, index + 1)
+                pair.second.text = if (online()) "$live ms" else "нет сети"
+                pair.second.setTextColor(if (!online() || live > 80) 0xFFFF4D4D.toInt() else 0xFF3DDC84.toInt())
+            }
+            if (state == 2) {
+                val seconds = ((System.currentTimeMillis() - connectedAt) / 1000L).toInt().coerceAtLeast(0)
+                statusText.text = "Подключено · ${clock(seconds)}"
+                statusText.setTextColor(0xFF3DDC84.toInt())
+                notifyConnected(place.title, clock(seconds))
+            }
+            handler.postDelayed(this, 1000)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,6 +154,14 @@ class MainActivity : AppCompatActivity() {
         serverRow.setOnClickListener { showPage(2) }
         findViewById<LinearLayout>(R.id.bottomBar).background = round(0xFF141414.toInt(), 28f * density)
 
+        val menuBtn = TextView(this)
+        menuBtn.text = "☰"
+        menuBtn.textSize = 26f
+        menuBtn.setTextColor(0xFFFFFFFF.toInt())
+        menuBtn.setPadding((8 * density).toInt(), (8 * density).toInt(), (8 * density).toInt(), 0)
+        menuBtn.setOnClickListener { showMenu() }
+        findViewById<LinearLayout>(R.id.homePage).addView(menuBtn, 0)
+
         findViewById<LinearLayout>(R.id.proCard).background = round(0xFF161616.toInt(), 18f * density)
         proKeyInput.background = round(0xFF161616.toInt(), 16f * density, 0xFF3A3050.toInt())
         saveProKey.background = round(0xFFB388FF.toInt(), 16f * density)
@@ -139,12 +197,14 @@ class MainActivity : AppCompatActivity() {
         paint()
         vpnButton.setOnClickListener { onPower() }
         showPage(0)
+        handler.post(tick)
     }
 
     override fun onResume() {
         super.onResume()
         showServer()
         refreshPro()
+        if (pages[2].visibility == View.VISIBLE) fillLocations()
     }
 
     private fun round(color: Int, radius: Float, stroke: Int = 0): GradientDrawable {
@@ -158,7 +218,71 @@ class MainActivity : AppCompatActivity() {
         return shape
     }
 
+    private fun loggedIn() = prefs.getBoolean("logged_in", false)
+
     private fun hasPro() = !prefs.getString("wg_key", "").isNullOrBlank()
+
+    private fun online(): Boolean {
+        val cm = getSystemService(ConnectivityManager::class.java) ?: return false
+        return cm.activeNetwork != null
+    }
+
+    private fun livePing(base: Int, salt: Int): Int {
+        val wave = ((System.currentTimeMillis() / 1000L) + salt) % 5
+        return (base + wave - 2).toInt().coerceAtLeast(8)
+    }
+
+    private fun clock(total: Int): String {
+        val h = total / 3600
+        val m = (total % 3600) / 60
+        val s = total % 60
+        return "%02d:%02d:%02d".format(h, m, s)
+    }
+
+    private fun showMenu() {
+        val items = arrayOf("Вход", "Регистрация", "Серверы", "Настройки", "Выйти")
+        AlertDialog.Builder(this)
+            .setTitle("MAGGA")
+            .setItems(items) { _, which ->
+                when (which) {
+                    0 -> startActivity(Intent(this, LoginActivity::class.java).putExtra("mode", "login"))
+                    1 -> startActivity(Intent(this, LoginActivity::class.java).putExtra("mode", "register"))
+                    2 -> showPage(2)
+                    3 -> showPage(3)
+                    4 -> logout()
+                }
+            }
+            .show()
+    }
+
+    private fun logout() {
+        val current = placeOf(prefs.getString("server", "GERMANY"))
+        val edit = prefs.edit().putBoolean("logged_in", false).remove("email")
+        if (current.pro) {
+            edit.putString("server", "GERMANY").putString("ping", "23 ms")
+            disconnect()
+        }
+        edit.apply()
+        showServer()
+        refreshPro()
+        Toast.makeText(this, "Вы вышли", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun blockPremium() {
+        val needAccount = !loggedIn()
+        AlertDialog.Builder(this)
+            .setTitle("Премиум")
+            .setMessage(if (needAccount) "Нужен аккаунт и подписка" else "Нужна подписка")
+            .setNegativeButton("Закрыть", null)
+            .setPositiveButton(if (needAccount) "Войти" else "Подписка") { _, _ ->
+                if (needAccount) {
+                    startActivity(Intent(this, LoginActivity::class.java).putExtra("mode", "login"))
+                } else {
+                    showPage(1)
+                }
+            }
+            .show()
+    }
 
     private fun refreshPro() {
         val on = hasPro()
@@ -189,9 +313,7 @@ class MainActivity : AppCompatActivity() {
         val edit = prefs.edit().remove("wg_key")
         if (current.pro) {
             edit.putString("server", "GERMANY").putString("ping", "23 ms")
-            connectRunnable?.let { handler.removeCallbacks(it) }
-            state = 0
-            paint()
+            disconnect()
         }
         edit.apply()
         proKeyInput.setText("")
@@ -218,6 +340,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun fillLocations() {
         locationsBox.removeAllViews()
+        locationPings.clear()
         val density = resources.displayMetrics.density
         fun dp(v: Int) = (v * density).toInt()
         val selected = prefs.getString("server", "GERMANY")
@@ -258,7 +381,7 @@ class MainActivity : AppCompatActivity() {
             row.addView(flag)
             row.addView(texts)
 
-            val unlocked = !place.pro || hasPro()
+            val unlocked = !place.pro || (loggedIn() && hasPro())
             if (place.pro) {
                 val badge = TextView(this)
                 badge.text = "Pro"
@@ -274,21 +397,20 @@ class MainActivity : AppCompatActivity() {
                 badge.layoutParams = badgeParams
                 row.addView(badge)
             }
-            if (unlocked) {
-                val pingView = TextView(this)
-                pingView.text = place.ping
-                pingView.textSize = 14f
-                pingView.setTextColor(0xFF3DDC84.toInt())
-                row.addView(pingView)
-            }
+            val pingView = TextView(this)
+            pingView.text = "${place.ping} ms"
+            pingView.textSize = 14f
+            pingView.setTextColor(0xFF3DDC84.toInt())
+            row.addView(pingView)
+            locationPings.add(place.ping to pingView)
 
             row.setOnClickListener {
                 if (!unlocked) {
-                    showPage(1)
+                    blockPremium()
                 } else {
-                    prefs.edit().putString("server", place.key).putString("ping", place.ping).apply()
+                    prefs.edit().putString("server", place.key).putString("ping", "${place.ping} ms").apply()
                     connectRunnable?.let { handler.removeCallbacks(it) }
-                    state = 0
+                    if (state != 0) disconnect()
                     showServer()
                     paint()
                     showPage(0)
@@ -310,37 +432,63 @@ class MainActivity : AppCompatActivity() {
 
     private fun showServer() {
         val place = placeOf(prefs.getString("server", "GERMANY"))
-        val ping = prefs.getString("ping", place.ping) ?: place.ping
         serverText.text = place.title
         cityText.text = place.city
-        pingText.text = ping
-        val digits = ping.filter { it.isDigit() }
-        val ms = if (digits.isEmpty()) 99 else digits.toInt()
-        signalBars.pingMs = ms
-        pingText.setTextColor(if (ms <= 80) 0xFF3DDC84.toInt() else 0xFFFF4D4D.toInt())
         homeFlag.code = codeOf(place.key)
         homeFlag.invalidate()
         homePro.visibility = if (place.pro) View.VISIBLE else View.GONE
+        if (!online()) {
+            pingText.text = "нет сети"
+            pingText.setTextColor(0xFFFF4D4D.toInt())
+            return
+        }
+        val live = livePing(place.ping, 0)
+        pingText.text = "$live ms"
+        signalBars.pingMs = live
+        pingText.setTextColor(if (live <= 80) 0xFF3DDC84.toInt() else 0xFFFF4D4D.toInt())
     }
 
     private fun onPower() {
         if (state == 0) {
+            val place = placeOf(prefs.getString("server", "GERMANY"))
+            if (place.pro && (!loggedIn() || !hasPro())) {
+                blockPremium()
+                return
+            }
+            if (!online()) {
+                Toast.makeText(this, "Нет интернета", Toast.LENGTH_SHORT).show()
+                return
+            }
             state = 1
             magga(true)
             paint()
+            askNotify()
             val task = Runnable {
                 if (state != 1) return@Runnable
+                if (!online()) {
+                    state = 0
+                    Toast.makeText(this, "Сервер не отвечает", Toast.LENGTH_SHORT).show()
+                    paint()
+                    return@Runnable
+                }
                 state = 2
+                connectedAt = System.currentTimeMillis()
                 paint()
             }
             connectRunnable = task
             handler.postDelayed(task, 1600)
         } else {
-            connectRunnable?.let { handler.removeCallbacks(it) }
-            magga(false)
-            state = 0
-            paint()
+            disconnect()
         }
+    }
+
+    private fun disconnect() {
+        connectRunnable?.let { handler.removeCallbacks(it) }
+        if (state != 0) magga(false)
+        state = 0
+        connectedAt = 0L
+        hideNotification()
+        paint()
     }
 
     private fun paint() {
@@ -348,12 +496,13 @@ class MainActivity : AppCompatActivity() {
         val color: Int
         if (state == 2) {
             vpnButton.setMode(2)
-            label = "Подключено"
-            color = 0xFFB388FF.toInt()
+            val seconds = ((System.currentTimeMillis() - connectedAt) / 1000L).toInt().coerceAtLeast(0)
+            label = "Подключено · ${clock(seconds)}"
+            color = 0xFF3DDC84.toInt()
         } else if (state == 1) {
             vpnButton.setMode(1)
             label = "Подключение..."
-            color = 0xFFB388FF.toInt()
+            color = 0xFFFF9A3C.toInt()
         } else {
             vpnButton.setMode(0)
             label = "Отключено"
@@ -370,6 +519,47 @@ class MainActivity : AppCompatActivity() {
         prefs.edit().putString("link_state", label).apply()
     }
 
+    private fun askNotify() {
+        if (Build.VERSION.SDK_INT >= 33 &&
+            checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+        ) {
+            requestPermissions(arrayOf(Manifest.permission.POST_NOTIFICATIONS), 41)
+        }
+    }
+
+    private fun notifyConnected(country: String, time: String) {
+        if (Build.VERSION.SDK_INT >= 33 &&
+            checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED
+        ) {
+            return
+        }
+        val nm = getSystemService(NotificationManager::class.java)
+        if (Build.VERSION.SDK_INT >= 26) {
+            nm.createNotificationChannel(
+                NotificationChannel("magga", "MAGGA", NotificationManager.IMPORTANCE_LOW)
+            )
+        }
+        val off = PendingIntent.getBroadcast(
+            this,
+            1,
+            Intent(this, MaggaReceiver::class.java),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        val note = NotificationCompat.Builder(this, "magga")
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle("MAGGA подключён")
+            .setContentText("$country · $time")
+            .setOngoing(true)
+            .setOnlyAlertOnce(true)
+            .addAction(0, "Отключить", off)
+            .build()
+        nm.notify(41, note)
+    }
+
+    private fun hideNotification() {
+        getSystemService(NotificationManager::class.java).cancel(41)
+    }
+
     private fun openInfo(title: String, body: String) {
         startActivity(
             Intent(this, InfoActivity::class.java)
@@ -380,6 +570,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         connectRunnable?.let { handler.removeCallbacks(it) }
+        handler.removeCallbacks(tick)
         super.onDestroy()
     }
 }

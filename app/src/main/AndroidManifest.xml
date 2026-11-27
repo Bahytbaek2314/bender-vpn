@@ -1,7 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.BIND_VPN_SERVICE" />
 
     <application
@@ -25,6 +27,10 @@
         <activity android:name=".StatusActivity" android:exported="false" />
         <activity android:name=".InfoActivity" android:exported="false" />
 
+        <receiver
+            android:name=".MaggaReceiver"
+            android:exported="false" />
+
         <service
             android:name=".SimpleVpnService"
             android:permission="android.permission.BIND_VPN_SERVICE"
@@ -35,4 +41,3 @@
         </service>
     </application>
 </manifest>
-
