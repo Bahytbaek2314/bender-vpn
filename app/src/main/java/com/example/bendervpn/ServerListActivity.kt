@@ -20,6 +20,7 @@ class ServerListActivity : AppCompatActivity() {
     )
 
     private val places = listOf(
+        Place("ALMATY", "Казахстан", 12, false),
         Place("GERMANY", "Германия", 23, false),
         Place("FRANCE", "Франция", 29, false),
         Place("RUSSIA", "Россия", 19, false),
@@ -74,6 +75,7 @@ class ServerListActivity : AppCompatActivity() {
                 "ENGLAND" -> "GB"
                 "NETHERLANDS" -> "NL"
                 "RUSSIA" -> "RU"
+                "ALMATY" -> "KZ"
                 else -> "DE"
             }
             flag.chosen = chosen

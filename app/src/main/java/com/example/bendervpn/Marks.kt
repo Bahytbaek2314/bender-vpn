@@ -30,6 +30,7 @@ class FlagView @JvmOverloads constructor(
             "FR" -> bandsV(canvas, w, h, 0xFF0055A4.toInt(), 0xFFFFFFFF.toInt(), 0xFFEF4135.toInt())
             "NL" -> bandsH(canvas, w, h, 0xFFAE1C28.toInt(), 0xFFFFFFFF.toInt(), 0xFF21468B.toInt())
             "RU" -> bandsH(canvas, w, h, 0xFFFFFFFF.toInt(), 0xFF0039A6.toInt(), 0xFFD52B1E.toInt())
+            "KZ" -> kazakhstan(canvas, w, h)
             "GB" -> england(canvas, w, h)
             else -> bandsH(canvas, w, h, 0xFF000000.toInt(), 0xFFDD0000.toInt(), 0xFFFFCE00.toInt())
         }
@@ -74,6 +75,15 @@ class FlagView @JvmOverloads constructor(
         canvas.drawRect(0f, (h - band) / 2f, w, (h + band) / 2f, paint)
         val upright = w * 0.16f
         canvas.drawRect((w - upright) / 2f, 0f, (w + upright) / 2f, h, paint)
+    }
+}
+
+private fun kazakhstan(canvas: Canvas, w: Float, h: Float) {
+        paint.color = 0xFF00AFC8.toInt()
+        canvas.drawRect(0f, 0f, w, h, paint)
+        paint.color = 0xFFFEC50C.toInt()
+        canvas.drawCircle(w * 0.5f, h * 0.42f, h * 0.22f, paint)
+        canvas.drawRect(w * 0.15f, h * 0.76f, w * 0.85f, h * 0.84f, paint)
     }
 }
 

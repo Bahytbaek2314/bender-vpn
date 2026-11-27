@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
     )
 
     private val places = listOf(
+        Place("ALMATY", "Казахстан", "Алматы", 12, false),
         Place("GERMANY", "Германия", "Франкфурт", 23, false),
         Place("FRANCE", "Франция", "Париж", 29, false),
         Place("RUSSIA", "Россия", "Москва", 19, false),
@@ -381,6 +382,7 @@ class MainActivity : AppCompatActivity() {
         "ENGLAND" -> "GB"
         "NETHERLANDS" -> "NL"
         "RUSSIA" -> "RU"
+        "ALMATY" -> "KZ"
         else -> "DE"
     }
 
@@ -416,7 +418,11 @@ class MainActivity : AppCompatActivity() {
                 return
             }
             state = 1
-            magga(true)
+            if (!magga(true)) {
+                state = 0
+                paint()
+                return
+            }
             paint()
             askNotify()
             val task = Runnable {
