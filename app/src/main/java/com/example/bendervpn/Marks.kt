@@ -76,9 +76,8 @@ class FlagView @JvmOverloads constructor(
         val upright = w * 0.16f
         canvas.drawRect((w - upright) / 2f, 0f, (w + upright) / 2f, h, paint)
     }
-}
 
-private fun kazakhstan(canvas: Canvas, w: Float, h: Float) {
+    private fun kazakhstan(canvas: Canvas, w: Float, h: Float) {
         paint.color = 0xFF00AFC8.toInt()
         canvas.drawRect(0f, 0f, w, h, paint)
         paint.color = 0xFFFEC50C.toInt()

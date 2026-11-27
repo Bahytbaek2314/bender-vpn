@@ -12,7 +12,7 @@ fun AppCompatActivity.magga(up: Boolean): Boolean {
         Toast.makeText(this, "Установи приложение WireGuard", Toast.LENGTH_LONG).show()
         return false
     }
-    val prefs = getSharedPreferences("vpn", MODE_PRIVATE)
+    val prefs = getSharedPreferences("vpn", android.content.Context.MODE_PRIVATE)
     val saved = prefs.getString("wg_key", "")?.trim().orEmpty()
     val server = prefs.getString("server", "") ?: ""
     val named = saved.isNotEmpty() &&
