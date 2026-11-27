@@ -154,14 +154,6 @@ class MainActivity : AppCompatActivity() {
         serverRow.setOnClickListener { showPage(2) }
         findViewById<LinearLayout>(R.id.bottomBar).background = round(0xFF141414.toInt(), 28f * density)
 
-        val menuBtn = TextView(this)
-        menuBtn.text = "☰"
-        menuBtn.textSize = 26f
-        menuBtn.setTextColor(0xFFFFFFFF.toInt())
-        menuBtn.setPadding((8 * density).toInt(), (8 * density).toInt(), (8 * density).toInt(), 0)
-        menuBtn.setOnClickListener { showMenu() }
-        findViewById<LinearLayout>(R.id.homePage).addView(menuBtn, 0)
-
         findViewById<LinearLayout>(R.id.proCard).background = round(0xFF161616.toInt(), 18f * density)
         proKeyInput.background = round(0xFF161616.toInt(), 16f * density, 0xFF3A3050.toInt())
         saveProKey.background = round(0xFFB388FF.toInt(), 16f * density)
@@ -239,48 +231,12 @@ class MainActivity : AppCompatActivity() {
         return "%02d:%02d:%02d".format(h, m, s)
     }
 
-    private fun showMenu() {
-        val items = arrayOf("Вход", "Регистрация", "Серверы", "Настройки", "Выйти")
-        AlertDialog.Builder(this)
-            .setTitle("MAGGA")
-            .setItems(items) { _, which ->
-                when (which) {
-                    0 -> startActivity(Intent(this, LoginActivity::class.java).putExtra("mode", "login"))
-                    1 -> startActivity(Intent(this, LoginActivity::class.java).putExtra("mode", "register"))
-                    2 -> showPage(2)
-                    3 -> showPage(3)
-                    4 -> logout()
-                }
-            }
-            .show()
-    }
-
-    private fun logout() {
-        val current = placeOf(prefs.getString("server", "GERMANY"))
-        val edit = prefs.edit().putBoolean("logged_in", false).remove("email")
-        if (current.pro) {
-            edit.putString("server", "GERMANY").putString("ping", "23 ms")
-            disconnect()
-        }
-        edit.apply()
-        showServer()
-        refreshPro()
-        Toast.makeText(this, "Вы вышли", Toast.LENGTH_SHORT).show()
-    }
-
     private fun blockPremium() {
-        val needAccount = !loggedIn()
         AlertDialog.Builder(this)
             .setTitle("Премиум")
-            .setMessage(if (needAccount) "Нужен аккаунт и подписка" else "Нужна подписка")
+            .setMessage("Нужна подписка")
             .setNegativeButton("Закрыть", null)
-            .setPositiveButton(if (needAccount) "Войти" else "Подписка") { _, _ ->
-                if (needAccount) {
-                    startActivity(Intent(this, LoginActivity::class.java).putExtra("mode", "login"))
-                } else {
-                    showPage(1)
-                }
-            }
+            .setPositiveButton("Подписка") { _, _ -> showPage(1) }
             .show()
     }
 
@@ -381,7 +337,7 @@ class MainActivity : AppCompatActivity() {
             row.addView(flag)
             row.addView(texts)
 
-            val unlocked = !place.pro || (loggedIn() && hasPro())
+            val unlocked = !place.pro || hasPro()
             if (place.pro) {
                 val badge = TextView(this)
                 badge.text = "Pro"
@@ -451,7 +407,7 @@ class MainActivity : AppCompatActivity() {
     private fun onPower() {
         if (state == 0) {
             val place = placeOf(prefs.getString("server", "GERMANY"))
-            if (place.pro && (!loggedIn() || !hasPro())) {
+            if (place.pro && !hasPro()) {
                 blockPremium()
                 return
             }
