@@ -21,15 +21,22 @@ private class MaggaTunnel : Tunnel {
 
 private val tunnel = MaggaTunnel()
 
+private fun AppCompatActivity.tunnelText(): String {
+    return try {
+        assets.open("almaty.conf").bufferedReader().use { it.readText() }.replace("\r\n", "\n")
+    } catch (e: Exception) {
+        ""
+    }
+}
+
 fun AppCompatActivity.magga(
     up: Boolean,
     ask: ((Intent) -> Unit)? = null,
     done: ((Boolean) -> Unit)? = null
 ): Boolean {
-    val prefs = getSharedPreferences("vpn", android.content.Context.MODE_PRIVATE)
-    val saved = prefs.getString("wg_key", "")?.trim().orEmpty().replace("\r\n", "\n")
+    val saved = tunnelText()
     if (!saved.contains("[Interface]")) {
-        Toast.makeText(this, "В импорт вставь полный конфиг, не имя туннеля", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Конфиг сервера не вшит", Toast.LENGTH_LONG).show()
         return false
     }
     if (up) {
