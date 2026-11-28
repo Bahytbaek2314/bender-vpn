@@ -62,7 +62,7 @@ fun AppCompatActivity.magga(
         } catch (e: Exception) {
             if (mine != job) return@execute
             runOnUiThread {
-                Toast.makeText(this, e.message ?: "Туннель не запустился", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Не включился: " + (e.message ?: e.javaClass.simpleName), Toast.LENGTH_LONG).show()
                 done?.invoke(false)
             }
         }

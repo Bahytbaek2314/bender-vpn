@@ -20,9 +20,20 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.NotificationCompat
 
 class MainActivity : AppCompatActivity() {
+
+    private val vpnPermit = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            startTunnel()
+        } else {
+            state = 0
+            paint()
+            Toast.makeText(this, "Без разрешения VPN не включится", Toast.LENGTH_LONG).show()
+        }
+    }
 
     private lateinit var vpnButton: PowerButton
     private lateinit var statusText: TextView
@@ -407,40 +418,53 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onPower() {
-        if (state == 0) {
-            val place = placeOf(prefs.getString("server", "GERMANY"))
-            if (place.pro && !hasPro()) {
-                blockPremium()
-                return
-            }
-            if (!online()) {
-                Toast.makeText(this, "Нет интернета", Toast.LENGTH_SHORT).show()
-                return
-            }
-            state = 1
-            if (!magga(true)) {
+        if (state != 0) {
+            disconnect()
+            return
+        }
+        if (!online()) {
+            Toast.makeText(this, "Нет интернета", Toast.LENGTH_LONG).show()
+            return
+        }
+        val place = placeOf(prefs.getString("server", "ALMATY"))
+        if (place.pro && !hasPro()) {
+            blockPremium()
+            return
+        }
+        if (place.key != "ALMATY") {
+            prefs.edit().putString("server", "ALMATY").putString("ping", "12 ms").apply()
+            showServer()
+            Toast.makeText(this, "Пока работает только Алматы", Toast.LENGTH_LONG).show()
+        }
+        state = 1
+        paint()
+        val permit = android.net.VpnService.prepare(this)
+        if (permit != null) {
+            Toast.makeText(this, "Разреши VPN", Toast.LENGTH_SHORT).show()
+            vpnPermit.launch(permit)
+            return
+        }
+        startTunnel()
+    }
+
+    private fun startTunnel() {
+        state = 1
+        paint()
+        Toast.makeText(this, "Подключаю Алматы", Toast.LENGTH_SHORT).show()
+        val started = magga(true, done = { ok ->
+            if (!ok) {
                 state = 0
                 paint()
-                return
+                return@magga
             }
+            state = 2
+            connectedAt = System.currentTimeMillis()
             paint()
             askNotify()
-            val task = Runnable {
-                if (state != 1) return@Runnable
-                if (!online()) {
-                    state = 0
-                    Toast.makeText(this, "Сервер не отвечает", Toast.LENGTH_SHORT).show()
-                    paint()
-                    return@Runnable
-                }
-                state = 2
-                connectedAt = System.currentTimeMillis()
-                paint()
-            }
-            connectRunnable = task
-            handler.postDelayed(task, 1600)
-        } else {
-            disconnect()
+        })
+        if (!started) {
+            state = 0
+            paint()
         }
     }
 
